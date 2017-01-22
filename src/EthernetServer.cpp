@@ -1,3 +1,9 @@
+/*
+ * src/EthernetServer.cpp
+ * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ *
+ */
+
 #include "utility/w5100.h"
 #include "utility/socket.h"
 extern "C" {

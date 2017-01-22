@@ -1,3 +1,9 @@
+/*
+ * src/EthernetServer.h
+ * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ *
+ */
+
 #ifndef ethernetserver_h
 #define ethernetserver_h
 

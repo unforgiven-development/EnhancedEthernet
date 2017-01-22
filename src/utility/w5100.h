@@ -1,4 +1,8 @@
 /*
+ * src/utility/w5100.h
+ * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ *
+ * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>
  * Copyright (c) 2010 by Arduino LLC. All rights reserved.
  *
  * This file is free software; you can redistribute it and/or modify
@@ -7,8 +11,8 @@
  * published by the Free Software Foundation.
  */
 
-#ifndef	W5100_H_INCLUDED
-#define	W5100_H_INCLUDED
+#ifndef	utility_w5100_h_
+#define	utility_w5100_h_
 
 #include <SPI.h>
 
@@ -18,10 +22,11 @@
 
 typedef uint8_t SOCKET;
 
-#define IDM_OR  0x8000
-#define IDM_AR0 0x8001
-#define IDM_AR1 0x8002
-#define IDM_DR  0x8003
+#define IDM_OR	0x8000
+#define IDM_AR0	0x8001
+#define IDM_AR1	0x8002
+#define IDM_DR	0x8003
+
 /*
 class MR {
 public:
@@ -33,6 +38,7 @@ public:
   static const uint8_t IND   = 0x01;
 };
 */
+
 /*
 class IR {
 public:
@@ -49,49 +55,49 @@ public:
 
 class SnMR {
 public:
-  static const uint8_t CLOSE  = 0x00;
-  static const uint8_t TCP    = 0x01;
-  static const uint8_t UDP    = 0x02;
-  static const uint8_t IPRAW  = 0x03;
-  static const uint8_t MACRAW = 0x04;
-  static const uint8_t PPPOE  = 0x05;
-  static const uint8_t ND     = 0x20;
-  static const uint8_t MULTI  = 0x80;
+	static const uint8_t CLOSE	= 0x00;
+	static const uint8_t TCP	= 0x01;
+	static const uint8_t UDP	= 0x02;
+	static const uint8_t IPRAW	= 0x03;
+	static const uint8_t MACRAW	= 0x04;
+	static const uint8_t PPPOE	= 0x05;
+	static const uint8_t ND		= 0x20;
+	static const uint8_t MULTI	= 0x80;
 };
 
 enum SockCMD {
-  Sock_OPEN      = 0x01,
-  Sock_LISTEN    = 0x02,
-  Sock_CONNECT   = 0x04,
-  Sock_DISCON    = 0x08,
-  Sock_CLOSE     = 0x10,
-  Sock_SEND      = 0x20,
-  Sock_SEND_MAC  = 0x21,
-  Sock_SEND_KEEP = 0x22,
-  Sock_RECV      = 0x40
+	Sock_OPEN		= 0x01,
+	Sock_LISTEN		= 0x02,
+	Sock_CONNECT	= 0x04,
+	Sock_DISCON		= 0x08,
+	Sock_CLOSE		= 0x10,
+	Sock_SEND		= 0x20,
+	Sock_SEND_MAC	= 0x21,
+	Sock_SEND_KEEP	= 0x22,
+	Sock_RECV		= 0x40
 };
 
 /*class SnCmd {
 public:
-  static const uint8_t OPEN      = 0x01;
-  static const uint8_t LISTEN    = 0x02;
-  static const uint8_t CONNECT   = 0x04;
-  static const uint8_t DISCON    = 0x08;
-  static const uint8_t CLOSE     = 0x10;
-  static const uint8_t SEND      = 0x20;
-  static const uint8_t SEND_MAC  = 0x21;
-  static const uint8_t SEND_KEEP = 0x22;
-  static const uint8_t RECV      = 0x40;
+	static const uint8_t OPEN		= 0x01;
+	static const uint8_t LISTEN		= 0x02;
+	static const uint8_t CONNECT	= 0x04;
+	static const uint8_t DISCON		= 0x08;
+	static const uint8_t CLOSE		= 0x10;
+	static const uint8_t SEND		= 0x20;
+	static const uint8_t SEND_MAC	= 0x21;
+	static const uint8_t SEND_KEEP	= 0x22;
+	static const uint8_t RECV		= 0x40;
 };
 */
 
 class SnIR {
 public:
-  static const uint8_t SEND_OK = 0x10;
-  static const uint8_t TIMEOUT = 0x08;
-  static const uint8_t RECV    = 0x04;
-  static const uint8_t DISCON  = 0x02;
-  static const uint8_t CON     = 0x01;
+	static const uint8_t SEND_OK	= 0x10;
+	static const uint8_t TIMEOUT	= 0x08;
+	static const uint8_t RECV		= 0x04;
+	static const uint8_t DISCON		= 0x02;
+	static const uint8_t CON		= 0x01;
 };
 
 class SnSR {
@@ -368,59 +374,59 @@ private:
 extern W5100Class W5100;
 
 uint8_t W5100Class::readSn(SOCKET _s, uint16_t _addr) {
-  return read(CH_BASE + _s * CH_SIZE + _addr);
+	return read(CH_BASE + _s * CH_SIZE + _addr);
 }
 
 uint8_t W5100Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t _data) {
-  return write(CH_BASE + _s * CH_SIZE + _addr, _data);
+	return write(CH_BASE + _s * CH_SIZE + _addr, _data);
 }
 
 uint16_t W5100Class::readSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  return read(CH_BASE + _s * CH_SIZE + _addr, _buf, _len);
+	return read(CH_BASE + _s * CH_SIZE + _addr, _buf, _len);
 }
 
 uint16_t W5100Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  return write(CH_BASE + _s * CH_SIZE + _addr, _buf, _len);
+	return write(CH_BASE + _s * CH_SIZE + _addr, _buf, _len);
 }
 
 void W5100Class::getGatewayIp(uint8_t *_addr) {
-  readGAR(_addr);
+	readGAR(_addr);
 }
 
 void W5100Class::setGatewayIp(uint8_t *_addr) {
-  writeGAR(_addr);
+	writeGAR(_addr);
 }
 
 void W5100Class::getSubnetMask(uint8_t *_addr) {
-  readSUBR(_addr);
+	readSUBR(_addr);
 }
 
 void W5100Class::setSubnetMask(uint8_t *_addr) {
-  writeSUBR(_addr);
+	writeSUBR(_addr);
 }
 
 void W5100Class::getMACAddress(uint8_t *_addr) {
-  readSHAR(_addr);
+	readSHAR(_addr);
 }
 
 void W5100Class::setMACAddress(uint8_t *_addr) {
-  writeSHAR(_addr);
+	writeSHAR(_addr);
 }
 
 void W5100Class::getIPAddress(uint8_t *_addr) {
-  readSIPR(_addr);
+	readSIPR(_addr);
 }
 
 void W5100Class::setIPAddress(uint8_t *_addr) {
-  writeSIPR(_addr);
+	writeSIPR(_addr);
 }
 
 void W5100Class::setRetransmissionTime(uint16_t _timeout) {
-  writeRTR(_timeout);
+	writeRTR(_timeout);
 }
 
 void W5100Class::setRetransmissionCount(uint8_t _retry) {
-  writeRCR(_retry);
+	writeRCR(_retry);
 }
 
-#endif
+#endif	/* utility_w5100_h_ */

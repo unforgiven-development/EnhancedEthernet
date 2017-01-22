@@ -14,6 +14,7 @@ uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
 uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = {
 	0, 0, 0, 0 };
 
+
 int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned long responseTimeout) {
 	static DhcpClass s_dhcp;
 	_dhcp = &s_dhcp;

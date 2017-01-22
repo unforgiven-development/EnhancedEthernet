@@ -1,4 +1,8 @@
 /*
+ * src/EthernetUdp.h
+ * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ *
+ *
  *  Udp.cpp: Library to send/receive UDP packets with the Arduino ethernet shield.
  *  This version only offers minimal wrapping of socket.c/socket.h
  *  Drop Udp.h/.cpp into the Ethernet library directory at hardware/libraries/Ethernet/ 

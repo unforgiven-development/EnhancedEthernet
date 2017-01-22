@@ -1,3 +1,9 @@
+/*
+ * src/EthernetClient.h
+ * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ *
+ */
+
 #ifndef ethernetclient_h
 #define ethernetclient_h
 #include "Arduino.h"	

@@ -1,4 +1,8 @@
 /*
+ * src/utility/w5100.cpp
+ * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ *
+ * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>
  * Copyright (c) 2010 by Arduino LLC. All rights reserved.
  *
  * This file is free software; you can redistribute it and/or modify
