@@ -26,45 +26,43 @@ W5100Class W5100;
 #define TXBUF_BASE 0x4000
 #define RXBUF_BASE 0x6000
 
-void W5100Class::init(void)
-{
-  delay(300);
+void W5100Class::init(void) {
+	delay(300);
 
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-  SPI.begin();
-  initSS();
+	SPI.begin();
+	initSS();
 #else
-  SPI.begin(ETHERNET_SHIELD_SPI_CS);
-  // Set clock to 4Mhz (W5100 should support up to about 14Mhz)
-  SPI.setClockDivider(ETHERNET_SHIELD_SPI_CS, 21);
-  SPI.setDataMode(ETHERNET_SHIELD_SPI_CS, SPI_MODE0);
+	SPI.begin(ETHERNET_SHIELD_SPI_CS);
+	// Set clock to 4Mhz (W5100 should support up to about 14Mhz)
+	SPI.setClockDivider(ETHERNET_SHIELD_SPI_CS, 21);
+	SPI.setDataMode(ETHERNET_SHIELD_SPI_CS, SPI_MODE0);
 #endif
-  SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-  writeMR(1<<RST);
-  writeTMSR(0x55);
-  writeRMSR(0x55);
-  SPI.endTransaction();
+	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+	writeMR(1<<RST);
+	writeTMSR(0x55);
+	writeRMSR(0x55);
+	SPI.endTransaction();
 
-  for (int i=0; i<MAX_SOCK_NUM; i++) {
-    SBASE[i] = TXBUF_BASE + SSIZE * i;
-    RBASE[i] = RXBUF_BASE + RSIZE * i;
-  }
+	for (int i = 0; i < MAX_SOCK_NUM; i++) {
+		SBASE[i] = TXBUF_BASE + SSIZE * i;
+		RBASE[i] = RXBUF_BASE + RSIZE * i;
+	}
 }
 
-uint16_t W5100Class::getTXFreeSize(SOCKET s)
-{
-  uint16_t val=0, val1=0;
-  do {
-    val1 = readSnTX_FSR(s);
-    if (val1 != 0)
-      val = readSnTX_FSR(s);
-  } 
-  while (val != val1);
-  return val;
+uint16_t W5100Class::getTXFreeSize(SOCKET s) {
+	uint16_t val = 0, val1 = 0;
+	do {
+		val1 = readSnTX_FSR(s);
+		if (val1 != 0) {
+			val = readSnTX_FSR(s);
+		}
+	} while (val != val1);
+
+	return val;
 }
 
-uint16_t W5100Class::getRXReceivedSize(SOCKET s)
-{
+uint16_t W5100Class::getRXReceivedSize(SOCKET s) {
   uint16_t val=0,val1=0;
   do {
     val1 = readSnRX_RSR(s);
@@ -76,37 +74,32 @@ uint16_t W5100Class::getRXReceivedSize(SOCKET s)
 }
 
 
-void W5100Class::send_data_processing(SOCKET s, const uint8_t *data, uint16_t len)
-{
-  // This is same as having no offset in a call to send_data_processing_offset
-  send_data_processing_offset(s, 0, data, len);
+void W5100Class::send_data_processing(SOCKET s, const uint8_t *data, uint16_t len) {
+	// This is same as having no offset in a call to send_data_processing_offset
+	send_data_processing_offset(s, 0, data, len);
 }
 
-void W5100Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, const uint8_t *data, uint16_t len)
-{
-  uint16_t ptr = readSnTX_WR(s);
-  ptr += data_offset;
-  uint16_t offset = ptr & SMASK;
-  uint16_t dstAddr = offset + SBASE[s];
+void W5100Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, const uint8_t *data, uint16_t len) {
+	uint16_t ptr = readSnTX_WR(s);
+	ptr += data_offset;
+	uint16_t offset = ptr & SMASK;
+	uint16_t dstAddr = offset + SBASE[s];
 
-  if (offset + len > SSIZE) 
-  {
-    // Wrap around circular buffer
-    uint16_t size = SSIZE - offset;
-    write(dstAddr, data, size);
-    write(SBASE[s], data + size, len - size);
-  } 
-  else {
-    write(dstAddr, data, len);
-  }
+	if (offset + len > SSIZE) {
+		// Wrap around circular buffer
+		uint16_t size = SSIZE - offset;
+		write(dstAddr, data, size);
+		write(SBASE[s], data + size, len - size);
+	} else {
+		write(dstAddr, data, len);
+	}
 
-  ptr += len;
-  writeSnTX_WR(s, ptr);
+	ptr += len;
+	writeSnTX_WR(s, ptr);
 }
 
 
-void W5100Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uint8_t peek)
-{
+void W5100Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uint8_t peek) {
   uint16_t ptr;
   ptr = readSnRX_RD(s);
   read_data(s, ptr, data, len);
@@ -117,14 +110,13 @@ void W5100Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uin
   }
 }
 
-void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *dst, uint16_t len)
-{
-  uint16_t size;
-  uint16_t src_mask;
-  uint16_t src_ptr;
+void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *dst, uint16_t len) {
+	uint16_t size;
+	uint16_t src_mask;
+	uint16_t src_ptr;
 
-  src_mask = src & RMASK;
-  src_ptr = RBASE[s] + src_mask;
+	src_mask = src & RMASK;
+	src_ptr = RBASE[s] + src_mask;
 
   if( (src_mask + len) > RSIZE ) 
   {
@@ -138,8 +130,7 @@ void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *ds
 }
 
 
-uint8_t W5100Class::write(uint16_t _addr, uint8_t _data)
-{
+uint8_t W5100Class::write(uint16_t _addr, uint8_t _data) {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
   setSS();  
   SPI.transfer(0xF0);
@@ -156,10 +147,8 @@ uint8_t W5100Class::write(uint16_t _addr, uint8_t _data)
   return 1;
 }
 
-uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
-{
-  for (uint16_t i=0; i<_len; i++)
-  {
+uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
+  for (uint16_t i=0; i<_len; i++) {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
     setSS();    
     SPI.transfer(0xF0);
@@ -179,8 +168,7 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
   return _len;
 }
 
-uint8_t W5100Class::read(uint16_t _addr)
-{
+uint8_t W5100Class::read(uint16_t _addr) {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
   setSS();  
   SPI.transfer(0x0F);
@@ -197,10 +185,8 @@ uint8_t W5100Class::read(uint16_t _addr)
   return _data;
 }
 
-uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
-{
-  for (uint16_t i=0; i<_len; i++)
-  {
+uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len) {
+  for (uint16_t i=0; i<_len; i++) {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
     setSS();
     SPI.transfer(0x0F);
@@ -221,9 +207,10 @@ uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
 }
 
 void W5100Class::execCmdSn(SOCKET s, SockCMD _cmd) {
-  // Send command to socket
-  writeSnCR(s, _cmd);
-  // Wait for command to complete
-  while (readSnCR(s))
-    ;
+	// Send command to socket
+	writeSnCR(s, _cmd);
+	// Wait for command to complete
+	while (readSnCR(s)) {
+		// wait...
+	}
 }
