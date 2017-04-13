@@ -106,6 +106,7 @@ void W5100Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, con
 
 void W5100Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uint8_t peek) {
 	uint16_t ptr;
+
 	ptr = readSnRX_RD(s);
 	read_data(s, ptr, data, len);
 	if (!peek) {
@@ -177,7 +178,7 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
 
 uint8_t W5100Class::read(uint16_t _addr) {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-  setSS();  
+  setSS();
   SPI.transfer(0x0F);
   SPI.transfer(_addr >> 8);
   SPI.transfer(_addr & 0xFF);

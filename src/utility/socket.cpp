@@ -70,9 +70,9 @@ uint8_t listen(SOCKET s) {
 
 
 /**
- * @brief	This function established  the connection for the channel in Active (client) mode. 
+ * @brief	This function established  the connection for the channel in Active (client) mode.
  * 		This function waits for the untill the connection is established.
- * 		
+ *
  * @return	1 for success else 0.
  */
 uint8_t connect(SOCKET s, uint8_t * addr, uint16_t port) {
@@ -163,7 +163,7 @@ uint16_t send(SOCKET s, const uint8_t * buf, uint16_t len) {
 /**
  * @brief	This function is an application I/F function which is used to receive the data in TCP mode.
  * 		It continues to wait for data as much as the application wants to receive.
- * 		
+ *
  * @return	received data size for success else -1.
  */
 int16_t recv(SOCKET s, uint8_t *buf, int16_t len)
@@ -201,33 +201,33 @@ int16_t recv(SOCKET s, uint8_t *buf, int16_t len)
 }
 
 
-int16_t recvAvailable(SOCKET s)
-{
-  SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-  int16_t ret = W5100.getRXReceivedSize(s);
-  SPI.endTransaction();
-  return ret;
+int16_t recvAvailable(SOCKET s) {
+	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+	int16_t ret = W5100.getRXReceivedSize(s);
+	SPI.endTransaction();
+
+	return ret;
 }
 
 
 /**
  * @brief	Returns the first byte in the receive queue (no checking)
- * 		
+ *
  * @return
  */
-uint16_t peek(SOCKET s, uint8_t *buf)
-{
-  SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-  W5100.recv_data_processing(s, buf, 1, 1);
-  SPI.endTransaction();
-  return 1;
+uint16_t peek(SOCKET s, uint8_t *buf) {
+	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+	W5100.recv_data_processing(s, buf, 1, 1);
+	SPI.endTransaction();
+
+	return 1;
 }
 
 
 /**
- * @brief	This function is an application I/F function which is used to send the data for other then TCP mode. 
+ * @brief	This function is an application I/F function which is used to send the data for other then TCP mode.
  * 		Unlike TCP transmission, The peer's destination address and the port is needed.
- * 		
+ *
  * @return	This function return send data size for success else -1.
  */
 uint16_t sendto(SOCKET s, const uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t port)
@@ -241,7 +241,7 @@ uint16_t sendto(SOCKET s, const uint8_t *buf, uint16_t len, uint8_t *addr, uint1
     (
   ((addr[0] == 0x00) && (addr[1] == 0x00) && (addr[2] == 0x00) && (addr[3] == 0x00)) ||
     ((port == 0x00)) ||(ret == 0)
-    ) 
+    )
   {
     /* +2008.01 [bj] : added return value */
     ret = 0;
@@ -257,7 +257,7 @@ uint16_t sendto(SOCKET s, const uint8_t *buf, uint16_t len, uint8_t *addr, uint1
     W5100.execCmdSn(s, Sock_SEND);
 
     /* +2008.01 bj */
-    while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK ) 
+    while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK )
     {
       if (W5100.readSnIR(s) & SnIR::TIMEOUT)
       {
@@ -281,8 +281,8 @@ uint16_t sendto(SOCKET s, const uint8_t *buf, uint16_t len, uint8_t *addr, uint1
 
 /**
  * @brief	This function is an application I/F function which is used to receive the data in other then
- * 	TCP mode. This function is used to receive UDP, IP_RAW and MAC_RAW mode, and handle the header as well. 
- * 	
+ * 	TCP mode. This function is used to receive UDP, IP_RAW and MAC_RAW mode, and handle the header as well.
+ *
  * @return	This function return received data size for success else -1.
  */
 uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t *port)
@@ -364,9 +364,9 @@ uint16_t igmpsend(SOCKET s, const uint8_t * buf, uint16_t len)
 {
   uint16_t ret=0;
 
-  if (len > W5100.SSIZE) 
+  if (len > W5100.SSIZE)
     ret = W5100.SSIZE; // check size not to exceed MAX size.
-  else 
+  else
     ret = len;
 
   if (ret == 0)
@@ -376,7 +376,7 @@ uint16_t igmpsend(SOCKET s, const uint8_t * buf, uint16_t len)
   W5100.send_data_processing(s, (uint8_t *)buf, ret);
   W5100.execCmdSn(s, Sock_SEND);
 
-  while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK ) 
+  while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK )
   {
     if (W5100.readSnIR(s) & SnIR::TIMEOUT)
     {
@@ -419,7 +419,7 @@ int startUDP(SOCKET s, uint8_t* addr, uint16_t port)
     (
      ((addr[0] == 0x00) && (addr[1] == 0x00) && (addr[2] == 0x00) && (addr[3] == 0x00)) ||
      ((port == 0x00))
-    ) 
+    )
   {
     return 0;
   }
@@ -437,9 +437,9 @@ int sendUDP(SOCKET s)
 {
   SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
   W5100.execCmdSn(s, Sock_SEND);
-		
+
   /* +2008.01 bj */
-  while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK ) 
+  while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK )
   {
     if (W5100.readSnIR(s) & SnIR::TIMEOUT)
     {
@@ -453,7 +453,7 @@ int sendUDP(SOCKET s)
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
   }
 
-  /* +2008.01 bj */	
+  /* +2008.01 bj */
   W5100.writeSnIR(s, SnIR::SEND_OK);
   SPI.endTransaction();
 
