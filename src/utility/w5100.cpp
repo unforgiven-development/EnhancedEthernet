@@ -16,8 +16,12 @@
 
 #include "w5100.h"
 
-// W5100 controller instance
+
+
+/* W5100 controller instance */
 W5100Class W5100;
+
+
 
 #define TX_RX_MAX_BUF_SIZE 2048
 #define TX_BUF 0x1100
@@ -26,20 +30,25 @@ W5100Class W5100;
 #define TXBUF_BASE 0x4000
 #define RXBUF_BASE 0x6000
 
+
+
 void W5100Class::init(void) {
 	delay(300);
 
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
 	SPI.begin();
 	initSS();
-#else
+
+#else	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
 	SPI.begin(ETHERNET_SHIELD_SPI_CS);
-	// Set clock to 4Mhz (W5100 should support up to about 14Mhz)
+	/* Set clock to 4Mhz (W5100 should support up to about 14Mhz) */
 	SPI.setClockDivider(ETHERNET_SHIELD_SPI_CS, 21);
 	SPI.setDataMode(ETHERNET_SHIELD_SPI_CS, SPI_MODE0);
-#endif
+
+#endif	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
+
 	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-	writeMR(1<<RST);
+	writeMR(1 << RST);
 	writeTMSR(0x55);
 	writeRMSR(0x55);
 	SPI.endTransaction();
@@ -49,6 +58,7 @@ void W5100Class::init(void) {
 		RBASE[i] = RXBUF_BASE + RSIZE * i;
 	}
 }
+
 
 uint16_t W5100Class::getTXFreeSize(SOCKET s) {
 	uint16_t val = 0;
@@ -63,6 +73,7 @@ uint16_t W5100Class::getTXFreeSize(SOCKET s) {
 
 	return val;
 }
+
 
 uint16_t W5100Class::getRXReceivedSize(SOCKET s) {
 	uint16_t val = 0;
@@ -80,9 +91,10 @@ uint16_t W5100Class::getRXReceivedSize(SOCKET s) {
 
 
 void W5100Class::send_data_processing(SOCKET s, const uint8_t *data, uint16_t len) {
-	// This is same as having no offset in a call to send_data_processing_offset
+	/* This is same as having no offset in a call to send_data_processing_offset */
 	send_data_processing_offset(s, 0, data, len);
 }
+
 
 void W5100Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, const uint8_t *data, uint16_t len) {
 	uint16_t ptr = readSnTX_WR(s);
@@ -91,7 +103,7 @@ void W5100Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, con
 	uint16_t dstAddr = offset + SBASE[s];
 
 	if (offset + len > SSIZE) {
-		// Wrap around circular buffer
+		/* Wrap around circular buffer */
 		uint16_t size = SSIZE - offset;
 		write(dstAddr, data, size);
 		write(SBASE[s], data + size, len - size);
@@ -115,6 +127,7 @@ void W5100Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uin
 	}
 }
 
+
 void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *dst, uint16_t len) {
 	uint16_t size;
 	uint16_t src_mask;
@@ -123,18 +136,19 @@ void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *ds
 	src_mask = src & RMASK;
 	src_ptr = RBASE[s] + src_mask;
 
-	if ((src_mask + len) > RSIZE ) {
+	if ((src_mask + len) > RSIZE) {
 		size = RSIZE - src_mask;
 		read(src_ptr, (uint8_t *)dst, size);
 		dst += size;
-		read(RBASE[s], (uint8_t *) dst, len - size);
+		read(RBASE[s], (uint8_t *)dst, len - size);
 	} else {
-		read(src_ptr, (uint8_t *) dst, len);
+		read(src_ptr, (uint8_t *)dst, len);
 	}
 }
 
 
 uint8_t W5100Class::write(uint16_t _addr, uint8_t _data) {
+
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
 	setSS();
 	SPI.transfer(0xF0);
@@ -142,12 +156,14 @@ uint8_t W5100Class::write(uint16_t _addr, uint8_t _data) {
 	SPI.transfer(_addr & 0xFF);
 	SPI.transfer(_data);
 	resetSS();
-#else
+
+#else	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
 	SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0xF0, SPI_CONTINUE);
 	SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
 	SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
 	SPI.transfer(ETHERNET_SHIELD_SPI_CS, _data);
-#endif
+
+#endif	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
 
 	return 1;
 }
@@ -155,6 +171,7 @@ uint8_t W5100Class::write(uint16_t _addr, uint8_t _data) {
 
 uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
 	for (uint16_t i = 0; i < _len; i++) {
+
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
 		setSS();
 		SPI.transfer(0xF0);
@@ -163,13 +180,16 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
 		_addr++;
 		SPI.transfer(_buf[i]);
 		resetSS();
-#else
+
+#else	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
 		SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0xF0, SPI_CONTINUE);
 		SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
 		SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
 		SPI.transfer(ETHERNET_SHIELD_SPI_CS, _buf[i]);
 		_addr++;
-#endif
+
+#endif	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
+
 	}
 
 	return _len;
@@ -177,48 +197,60 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
 
 
 uint8_t W5100Class::read(uint16_t _addr) {
+
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-  setSS();
-  SPI.transfer(0x0F);
-  SPI.transfer(_addr >> 8);
-  SPI.transfer(_addr & 0xFF);
-  uint8_t _data = SPI.transfer(0);
-  resetSS();
-#else
-  SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
-  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
-  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-  uint8_t _data = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
-#endif
-  return _data;
+	setSS();
+	SPI.transfer(0x0F);
+	SPI.transfer(_addr >> 8);
+	SPI.transfer(_addr & 0xFF);
+	uint8_t _data = SPI.transfer(0);
+	resetSS();
+
+#else	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
+	SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
+	SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+	SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+	uint8_t _data = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
+
+#endif	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
+
+	return _data;
 }
+
 
 uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  for (uint16_t i=0; i<_len; i++) {
+	for (uint16_t i = 0; i < _len; i++) {
+
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-    setSS();
-    SPI.transfer(0x0F);
-    SPI.transfer(_addr >> 8);
-    SPI.transfer(_addr & 0xFF);
-    _addr++;
-    _buf[i] = SPI.transfer(0);
-    resetSS();
-#else
-    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
-    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
-    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-    _buf[i] = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
-    _addr++;
-#endif
-  }
-  return _len;
+		setSS();
+		SPI.transfer(0x0F);
+		SPI.transfer(_addr >> 8);
+		SPI.transfer(_addr & 0xFF);
+		_addr++;
+		_buf[i] = SPI.transfer(0);
+		resetSS();
+
+#else	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
+		SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
+		SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+		SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+		_buf[i] = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
+		_addr++;
+
+#endif	/* !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING) */
+
+	}
+
+	return _len;
 }
 
+
 void W5100Class::execCmdSn(SOCKET s, SockCMD _cmd) {
-	// Send command to socket
+	/* Send command to socket */
 	writeSnCR(s, _cmd);
-	// Wait for command to complete
+
+	/* Wait for command to complete */
 	while (readSnCR(s)) {
-		// wait...
+		/* (wait loop...) */
 	}
 }
