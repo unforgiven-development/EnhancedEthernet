@@ -13,6 +13,7 @@
 *.ino					text eol=lf
 *.pde					text eol=lf
 *.sh					text eol=lf
+*.subr					text eol=lf
 *.csh					text eol=lf
 *.fish					text eol=lf
 Doxyfile				text eol=lf
