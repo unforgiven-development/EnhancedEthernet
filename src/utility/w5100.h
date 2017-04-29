@@ -29,7 +29,7 @@ typedef uint8_t SOCKET;
 #define IDM_AR1			0x8002
 #define IDM_DR			0x8003
 
-/*
+
 class MR {
 public:
 	static const uint8_t RST							= 0x80;
@@ -39,7 +39,7 @@ public:
 	static const uint8_t AI								= 0x02;
 	static const uint8_t IND							= 0x01;
 };
-*/
+
 
 class IR {
 public:
@@ -250,22 +250,22 @@ private:
 
 
 public:
-	__GP_REGISTER8 (MR,		0x0000);				/* -- MR:		Mode */
-	__GP_REGISTER_N(GAR,	0x0001, 4);				/* -- GAR:		Gateway IP address */
-	__GP_REGISTER_N(SUBR,	0x0005, 4);				/* -- SUBR:		Subnet mask address */
-	__GP_REGISTER_N(SHAR,	0x0009, 6);				/* -- SHAR:		Source MAC address */
-	__GP_REGISTER_N(SIPR,	0x000F, 4);				/* -- SIPR:		Source IP address */
-	__GP_REGISTER8 (IR,		0x0015);				/* -- IR:		Interrupt */
-	__GP_REGISTER8 (IMR,	0x0016);				/* -- IMR:		Interrupt Mask */
-	__GP_REGISTER16(RTR,	0x0017);				/* -- RTR:		Timeout address */
-	__GP_REGISTER8 (RCR,	0x0019);				/* -- RCR:		Retry count */
-	__GP_REGISTER8 (RMSR,	0x001A);				/* -- RMSR:		Receive memory size */
-	__GP_REGISTER8 (TMSR,	0x001B);				/* -- TMSR:		Transmit memory size */
-	__GP_REGISTER8 (PATR,	0x001C);				/* -- PATR:		Authentication type address in PPPoE mode */
-	__GP_REGISTER8 (PTIMER,	0x0028);				/* -- PTIMER:	PPP LCP Request Timer */
-	__GP_REGISTER8 (PMAGIC,	0x0029);				/* -- PMAGIC:	PPP LCP Magic Number */
-	__GP_REGISTER_N(UIPR,	0x002A, 4);				/* -- UIPR:		Unreachable IP address in UDP mode */
-	__GP_REGISTER16(UPORT,	0x002E);				/* -- UPORT:	Unreachable Port address in UDP mode */
+	__GP_REGISTER8 (MR,		0x0000);				/*! MR:			Mode */
+	__GP_REGISTER_N(GAR,	0x0001, 4);				/*! GAR:		Gateway IP address */
+	__GP_REGISTER_N(SUBR,	0x0005, 4);				/*! SUBR:		Subnet mask address */
+	__GP_REGISTER_N(SHAR,	0x0009, 6);				/*! SHAR:		Source MAC address */
+	__GP_REGISTER_N(SIPR,	0x000F, 4);				/*! SIPR:		Source IP address */
+	__GP_REGISTER8 (IR,		0x0015);				/*! IR:			Interrupt */
+	__GP_REGISTER8 (IMR,	0x0016);				/*! IMR:		Interrupt Mask */
+	__GP_REGISTER16(RTR,	0x0017);				/*! RTR:		Timeout address */
+	__GP_REGISTER8 (RCR,	0x0019);				/*! RCR:		Retry count */
+	__GP_REGISTER8 (RMSR,	0x001A);				/*! RMSR:		Receive memory size */
+	__GP_REGISTER8 (TMSR,	0x001B);				/*! TMSR:		Transmit memory size */
+	__GP_REGISTER8 (PATR,	0x001C);				/*! PATR:		Authentication type address in PPPoE mode */
+	__GP_REGISTER8 (PTIMER,	0x0028);				/*! PTIMER:		PPP LCP Request Timer */
+	__GP_REGISTER8 (PMAGIC,	0x0029);				/*! PMAGIC:		PPP LCP Magic Number */
+	__GP_REGISTER_N(UIPR,	0x002A, 4);				/*! UIPR:		Unreachable IP address in UDP mode */
+	__GP_REGISTER16(UPORT,	0x002E);				/*! UPORT:		Unreachable Port address in UDP mode */
 
 #undef __GP_REGISTER8
 #undef __GP_REGISTER16
@@ -317,24 +317,24 @@ private:
 
 
 public:
-	__SOCKET_REGISTER8(SnMR,		0x0000)			/* -- SnMR:		Socket "n" Mode */
-	__SOCKET_REGISTER8(SnCR,		0x0001)			/* -- SnCR:		Socket "n" Command */
-	__SOCKET_REGISTER8(SnIR,		0x0002)			/* -- SnIR:		Socket "n" Interrupt */
-	__SOCKET_REGISTER8(SnSR,		0x0003)			/* -- SnSR:		Socket "n" Status */
-	__SOCKET_REGISTER16(SnPORT,		0x0004)			/* -- SnPORT:	Socket "n" Source Port */
-	__SOCKET_REGISTER_N(SnDHAR,		0x0006, 6)		/* -- SnDHAR:	Socket "n" Destination Hardware Address */
-	__SOCKET_REGISTER_N(SnDIPR,		0x000C, 4)		/* -- SnDIPR:	Socket "n" Destination IP Address */
-	__SOCKET_REGISTER16(SnDPORT,	0x0010)			/* -- SnDPORT:	Socket "n" Destination Port */
-	__SOCKET_REGISTER16(SnMSSR,		0x0012)			/* -- SnMSSR:	Socket "n" Maximum Segment Size */
-	__SOCKET_REGISTER8(SnPROTO,		0x0014)			/* -- SnPROTO:	Socket "n" Protocol in IP Raw Mode */
-	__SOCKET_REGISTER8(SnTOS,		0x0015)			/* -- SnTOS:	Socket "n" IP TOS */
-	__SOCKET_REGISTER8(SnTTL,		0x0016)			/* -- SnTTL:	Socket "n" IP TTL */
-	__SOCKET_REGISTER16(SnTX_FSR,	0x0020)			/* -- SnTX_FSR:	Socket "n" TX Free Size */
-	__SOCKET_REGISTER16(SnTX_RD,	0x0022)			/* -- SnTX_RD:	Socket "n" TX Read Pointer */
-	__SOCKET_REGISTER16(SnTX_WR,	0x0024)			/* -- SnTX_WR:	Socket "n" TX Write Pointer */
-	__SOCKET_REGISTER16(SnRX_RSR,	0x0026)			/* -- SnRX_RSR:	Socket "n" RX Received Size */
-	__SOCKET_REGISTER16(SnRX_RD,	0x0028)			/* -- SnRX_RD:	Socket "n" RX Read Pointer */
-	__SOCKET_REGISTER16(SnRX_WR,	0x002A)			/* -- SnRX_WR:	(RX Write Pointer?) [DATASHEET: "Reserved"] */
+	__SOCKET_REGISTER8(SnMR,		0x0000)			/*! SnMR:		Socket "n" Mode */
+	__SOCKET_REGISTER8(SnCR,		0x0001)			/*! SnCR:		Socket "n" Command */
+	__SOCKET_REGISTER8(SnIR,		0x0002)			/*! SnIR:		Socket "n" Interrupt */
+	__SOCKET_REGISTER8(SnSR,		0x0003)			/*! SnSR:		Socket "n" Status */
+	__SOCKET_REGISTER16(SnPORT,		0x0004)			/*! SnPORT:		Socket "n" Source Port */
+	__SOCKET_REGISTER_N(SnDHAR,		0x0006, 6)		/*! SnDHAR:		Socket "n" Destination Hardware Address */
+	__SOCKET_REGISTER_N(SnDIPR,		0x000C, 4)		/*! SnDIPR:		Socket "n" Destination IP Address */
+	__SOCKET_REGISTER16(SnDPORT,	0x0010)			/*! SnDPORT:	Socket "n" Destination Port */
+	__SOCKET_REGISTER16(SnMSSR,		0x0012)			/*! SnMSSR:		Socket "n" Maximum Segment Size */
+	__SOCKET_REGISTER8(SnPROTO,		0x0014)			/*! SnPROTO:	Socket "n" Protocol in IP Raw Mode */
+	__SOCKET_REGISTER8(SnTOS,		0x0015)			/*! SnTOS:		Socket "n" IP TOS */
+	__SOCKET_REGISTER8(SnTTL,		0x0016)			/*! SnTTL:		Socket "n" IP TTL */
+	__SOCKET_REGISTER16(SnTX_FSR,	0x0020)			/*! SnTX_FSR:	Socket "n" TX Free Size */
+	__SOCKET_REGISTER16(SnTX_RD,	0x0022)			/*! SnTX_RD:	Socket "n" TX Read Pointer */
+	__SOCKET_REGISTER16(SnTX_WR,	0x0024)			/*! SnTX_WR:	Socket "n" TX Write Pointer */
+	__SOCKET_REGISTER16(SnRX_RSR,	0x0026)			/*! SnRX_RSR:	Socket "n" RX Received Size */
+	__SOCKET_REGISTER16(SnRX_RD,	0x0028)			/*! SnRX_RD:	Socket "n" RX Read Pointer */
+	__SOCKET_REGISTER16(SnRX_WR,	0x002A)			/*! SnRX_WR:	(RX Write Pointer?) [DATASHEET: "Reserved"] */
 
 #undef __SOCKET_REGISTER8
 #undef __SOCKET_REGISTER16
@@ -342,21 +342,21 @@ public:
 
 
 private:
-	static const uint8_t	RST = 7;			/* Reset BIT */
+	static const uint8_t	RST = 7;			/*! Reset BIT */
 
-	static const int		SOCKETS = 4;		/* W5100 supports 4 active sockets */
+	static const int		SOCKETS = 4;		/*! W5100 supports 4 active sockets */
 
-	static const uint16_t	SMASK = 0x07FF;		/* TX buffer MASK */
-	static const uint16_t	RMASK = 0x07FF;		/* RX buffer MASK */
+	static const uint16_t	SMASK = 0x07FF;		/*! TX buffer MASK */
+	static const uint16_t	RMASK = 0x07FF;		/*! RX buffer MASK */
 
 public:
-	static const uint16_t	SSIZE = 2048;		/* Maximum TX buffer size */
+	static const uint16_t	SSIZE = 2048;		/*! Maximum TX buffer size */
 
 private:
-	static const uint16_t	RSIZE = 2048;		/* Maximum RX buffer size */
+	static const uint16_t	RSIZE = 2048;		/*! Maximum RX buffer size */
 
-	uint16_t SBASE[SOCKETS];					/* TX buffer base address */
-	uint16_t RBASE[SOCKETS];					/* RX buffer base address */
+	uint16_t SBASE[SOCKETS];					/*! TX buffer base address */
+	uint16_t RBASE[SOCKETS];					/*! RX buffer base address */
 
 private:
 #ifndef SPI_HAS_EXTENDED_CS_PIN_HANDLING
@@ -401,7 +401,7 @@ private:
 
 	#endif
 #else	/* (#ifndef) SPI_HAS_EXTENDED_CS_PIN_HANDLING */
-	/* Use of EXTENDED_CS_PIN_HANDLING does not require functions 'initSS()', 'setSS()', or 'resetSS()' */
+	/*! Use of EXTENDED_CS_PIN_HANDLING does not require functions 'initSS()', 'setSS()', or 'resetSS()' */
 	#define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
 
 #endif	/* (#ifndef) SPI_HAS_EXTENDED_CS_PIN_HANDLING */

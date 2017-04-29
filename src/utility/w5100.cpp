@@ -22,13 +22,18 @@
 W5100Class W5100;
 
 
+/**
+ * \def TX_RX_MAX_BUF_SIZE	Defines the maximum size of the TX and RX buffers, combined, in bytes.
+ * \def TX_BUF				Defines the size of the TX buffer in bytes.
+ * \def RX_BUF				Defines the size of the RX buffer in bytes; determined by the difference of the maximum size
+ *							of the TX and RX buffers (combined), minus the defined size of the TX buffer.
+ */
+#define TX_RX_MAX_BUF_SIZE	2048
+#define TX_BUF				0x1100
+#define RX_BUF				(TX_BUF + TX_RX_MAX_BUF_SIZE)
 
-#define TX_RX_MAX_BUF_SIZE 2048
-#define TX_BUF 0x1100
-#define RX_BUF (TX_BUF + TX_RX_MAX_BUF_SIZE)
-
-#define TXBUF_BASE 0x4000
-#define RXBUF_BASE 0x6000
+#define TXBUF_BASE			0x4000
+#define RXBUF_BASE			0x6000
 
 
 
