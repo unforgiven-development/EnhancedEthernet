@@ -31,14 +31,15 @@ int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long 
  *
  * @brief Initialize DHCP, specifying MAC, timeout, and hostname
  *
- * @param[in] mac MAC address of the hardware requesting the DHCP lease.
- * @param[in] timeout Amount of time to wait while attempting to request a DHCP lease.
- * @param[in] hostname User-set hostname to use for the device.
+ * @param[in] mac				MAC address of the hardware requesting the DHCP lease.
+ * @param[in] timeout			Amount of time to wait while attempting to request a DHCP lease.
+ * \param[in] responseTimeout
+ * @param[in] hostname			User-set hostname to use for the device.
  *
  * @return Indicates whether the DHCP request was successful, or not.
  *
  */
-int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout, ) {
+int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout) {
 	_dhcpLeaseTime=0;
 	_dhcpT1=0;
 	_dhcpT2=0;
@@ -52,6 +53,24 @@ int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long 
 	memcpy((void*)_dhcpMacAddr, (void*)mac, 6);
 	_dhcp_state = STATE_DHCP_START;
 	return request_DHCP_lease();
+}
+
+
+int beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout, const char* requestedHostname) {
+	_dhcpLeaseTime=0;
+	_dhcpT1=0;
+	_dhcpT2=0;
+	_timeout = timeout;
+	_responseTimeout = responseTimeout;
+
+	// zero out _dhcpMacAddr
+	memset(_dhcpMacAddr, 0, 6);
+	reset_DHCP_lease();
+
+	memcpy((void*)_dhcpMacAddr, (void*)mac, 6);
+	_dhcp_state = STATE_DHCP_START;
+	return request_DHCP_lease();
+}
 }
 
 

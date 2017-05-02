@@ -143,7 +143,9 @@ typedef struct __attribute__((packed)) _RIP_MSG_FIXED {
 	uint8_t		chaddr[6];
 } RIP_MSG_FIXED;
 
-
+/**
+ * \class DhcpClass	Provides DHCP functionality for the EnhancedEthernet library
+ */
 class DhcpClass {
 private:
 	uint32_t		_dhcpInitialTransactionId;
@@ -181,6 +183,7 @@ public:
 	IPAddress getDnsServerIp();
 
 	int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
+	int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000, const char* requestedHostname);
 	int checkLease();
 };
 
