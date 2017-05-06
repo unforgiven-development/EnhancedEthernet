@@ -65,7 +65,7 @@ EthernetClient EthernetServer::available() {
 			uint8_t s = client.status();
 			if (s == SnSR::ESTABLISHED || s == SnSR::CLOSE_WAIT) {
 				if (client.available()) {
-					/* XXX: don't always pick the lowest numbered socket. */
+					/** \note don't always pick the lowest numbered socket. */
 					return client;
 				}
 			}
