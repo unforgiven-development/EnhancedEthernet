@@ -250,22 +250,22 @@ private:
 
 
 public:
-	__GP_REGISTER8 (MR,		0x0000);				/*! MR:			Mode */
-	__GP_REGISTER_N(GAR,	0x0001, 4);				/*! GAR:		Gateway IP address */
-	__GP_REGISTER_N(SUBR,	0x0005, 4);				/*! SUBR:		Subnet mask address */
-	__GP_REGISTER_N(SHAR,	0x0009, 6);				/*! SHAR:		Source MAC address */
-	__GP_REGISTER_N(SIPR,	0x000F, 4);				/*! SIPR:		Source IP address */
-	__GP_REGISTER8 (IR,		0x0015);				/*! IR:			Interrupt */
-	__GP_REGISTER8 (IMR,	0x0016);				/*! IMR:		Interrupt Mask */
-	__GP_REGISTER16(RTR,	0x0017);				/*! RTR:		Timeout address */
-	__GP_REGISTER8 (RCR,	0x0019);				/*! RCR:		Retry count */
-	__GP_REGISTER8 (RMSR,	0x001A);				/*! RMSR:		Receive memory size */
-	__GP_REGISTER8 (TMSR,	0x001B);				/*! TMSR:		Transmit memory size */
-	__GP_REGISTER8 (PATR,	0x001C);				/*! PATR:		Authentication type address in PPPoE mode */
-	__GP_REGISTER8 (PTIMER,	0x0028);				/*! PTIMER:		PPP LCP Request Timer */
-	__GP_REGISTER8 (PMAGIC,	0x0029);				/*! PMAGIC:		PPP LCP Magic Number */
-	__GP_REGISTER_N(UIPR,	0x002A, 4);				/*! UIPR:		Unreachable IP address in UDP mode */
-	__GP_REGISTER16(UPORT,	0x002E);				/*! UPORT:		Unreachable Port address in UDP mode */
+	__GP_REGISTER8 (MR,		0x0000);				/*!< MR:		Mode */
+	__GP_REGISTER_N(GAR,	0x0001, 4);				/*!< GAR:		Gateway IP address */
+	__GP_REGISTER_N(SUBR,	0x0005, 4);				/*!< SUBR:		Subnet mask address */
+	__GP_REGISTER_N(SHAR,	0x0009, 6);				/*!< SHAR:		Source MAC address */
+	__GP_REGISTER_N(SIPR,	0x000F, 4);				/*!< SIPR:		Source IP address */
+	__GP_REGISTER8 (IR,		0x0015);				/*!< IR:		Interrupt */
+	__GP_REGISTER8 (IMR,	0x0016);				/*!< IMR:		Interrupt Mask */
+	__GP_REGISTER16(RTR,	0x0017);				/*!< RTR:		Timeout address */
+	__GP_REGISTER8 (RCR,	0x0019);				/*!< RCR:		Retry count */
+	__GP_REGISTER8 (RMSR,	0x001A);				/*!< RMSR:		Receive memory size */
+	__GP_REGISTER8 (TMSR,	0x001B);				/*!< TMSR:		Transmit memory size */
+	__GP_REGISTER8 (PATR,	0x001C);				/*!< PATR:		Authentication type address in PPPoE mode */
+	__GP_REGISTER8 (PTIMER,	0x0028);				/*!< PTIMER:	PPP LCP Request Timer */
+	__GP_REGISTER8 (PMAGIC,	0x0029);				/*!< PMAGIC:	PPP LCP Magic Number */
+	__GP_REGISTER_N(UIPR,	0x002A, 4);				/*!< UIPR:		Unreachable IP address in UDP mode */
+	__GP_REGISTER16(UPORT,	0x002E);				/*!< UPORT:		Unreachable Port address in UDP mode */
 
 #undef __GP_REGISTER8
 #undef __GP_REGISTER16
@@ -317,24 +317,24 @@ private:
 
 
 public:
-	__SOCKET_REGISTER8(SnMR,		0x0000)			/*! SnMR:		Socket "n" Mode */
-	__SOCKET_REGISTER8(SnCR,		0x0001)			/*! SnCR:		Socket "n" Command */
-	__SOCKET_REGISTER8(SnIR,		0x0002)			/*! SnIR:		Socket "n" Interrupt */
-	__SOCKET_REGISTER8(SnSR,		0x0003)			/*! SnSR:		Socket "n" Status */
-	__SOCKET_REGISTER16(SnPORT,		0x0004)			/*! SnPORT:		Socket "n" Source Port */
-	__SOCKET_REGISTER_N(SnDHAR,		0x0006, 6)		/*! SnDHAR:		Socket "n" Destination Hardware Address */
-	__SOCKET_REGISTER_N(SnDIPR,		0x000C, 4)		/*! SnDIPR:		Socket "n" Destination IP Address */
-	__SOCKET_REGISTER16(SnDPORT,	0x0010)			/*! SnDPORT:	Socket "n" Destination Port */
-	__SOCKET_REGISTER16(SnMSSR,		0x0012)			/*! SnMSSR:		Socket "n" Maximum Segment Size */
-	__SOCKET_REGISTER8(SnPROTO,		0x0014)			/*! SnPROTO:	Socket "n" Protocol in IP Raw Mode */
-	__SOCKET_REGISTER8(SnTOS,		0x0015)			/*! SnTOS:		Socket "n" IP TOS */
-	__SOCKET_REGISTER8(SnTTL,		0x0016)			/*! SnTTL:		Socket "n" IP TTL */
-	__SOCKET_REGISTER16(SnTX_FSR,	0x0020)			/*! SnTX_FSR:	Socket "n" TX Free Size */
-	__SOCKET_REGISTER16(SnTX_RD,	0x0022)			/*! SnTX_RD:	Socket "n" TX Read Pointer */
-	__SOCKET_REGISTER16(SnTX_WR,	0x0024)			/*! SnTX_WR:	Socket "n" TX Write Pointer */
-	__SOCKET_REGISTER16(SnRX_RSR,	0x0026)			/*! SnRX_RSR:	Socket "n" RX Received Size */
-	__SOCKET_REGISTER16(SnRX_RD,	0x0028)			/*! SnRX_RD:	Socket "n" RX Read Pointer */
-	__SOCKET_REGISTER16(SnRX_WR,	0x002A)			/*! SnRX_WR:	(RX Write Pointer?) [DATASHEET: "Reserved"] */
+	__SOCKET_REGISTER8(SnMR,		0x0000)			/*!< SnMR:		Socket "n" Mode */
+	__SOCKET_REGISTER8(SnCR,		0x0001)			/*!< SnCR:		Socket "n" Command */
+	__SOCKET_REGISTER8(SnIR,		0x0002)			/*!< SnIR:		Socket "n" Interrupt */
+	__SOCKET_REGISTER8(SnSR,		0x0003)			/*!< SnSR:		Socket "n" Status */
+	__SOCKET_REGISTER16(SnPORT,		0x0004)			/*!< SnPORT:	Socket "n" Source Port */
+	__SOCKET_REGISTER_N(SnDHAR,		0x0006, 6)		/*!< SnDHAR:	Socket "n" Destination Hardware Address */
+	__SOCKET_REGISTER_N(SnDIPR,		0x000C, 4)		/*!< SnDIPR:	Socket "n" Destination IP Address */
+	__SOCKET_REGISTER16(SnDPORT,	0x0010)			/*!< SnDPORT:	Socket "n" Destination Port */
+	__SOCKET_REGISTER16(SnMSSR,		0x0012)			/*!< SnMSSR:	Socket "n" Maximum Segment Size */
+	__SOCKET_REGISTER8(SnPROTO,		0x0014)			/*!< SnPROTO:	Socket "n" Protocol in IP Raw Mode */
+	__SOCKET_REGISTER8(SnTOS,		0x0015)			/*!< SnTOS:		Socket "n" IP TOS */
+	__SOCKET_REGISTER8(SnTTL,		0x0016)			/*!< SnTTL:		Socket "n" IP TTL */
+	__SOCKET_REGISTER16(SnTX_FSR,	0x0020)			/*!< SnTX_FSR:	Socket "n" TX Free Size */
+	__SOCKET_REGISTER16(SnTX_RD,	0x0022)			/*!< SnTX_RD:	Socket "n" TX Read Pointer */
+	__SOCKET_REGISTER16(SnTX_WR,	0x0024)			/*!< SnTX_WR:	Socket "n" TX Write Pointer */
+	__SOCKET_REGISTER16(SnRX_RSR,	0x0026)			/*!< SnRX_RSR:	Socket "n" RX Received Size */
+	__SOCKET_REGISTER16(SnRX_RD,	0x0028)			/*!< SnRX_RD:	Socket "n" RX Read Pointer */
+	__SOCKET_REGISTER16(SnRX_WR,	0x002A)			/*!< SnRX_WR:	(RX Write Pointer?) [DATASHEET: "Reserved"] */
 
 #undef __SOCKET_REGISTER8
 #undef __SOCKET_REGISTER16
@@ -342,80 +342,109 @@ public:
 
 
 private:
-	static const uint8_t	RST = 7;			/*! Reset BIT */
+	static const uint8_t	RST = 7;			/*!< Reset BIT */
 
-	static const int		SOCKETS = 4;		/*! W5100 supports 4 active sockets */
+	static const int		SOCKETS = 4;		/*!< W5100 supports 4 active sockets */
 
-	static const uint16_t	SMASK = 0x07FF;		/*! TX buffer MASK */
-	static const uint16_t	RMASK = 0x07FF;		/*! RX buffer MASK */
+	static const uint16_t	SMASK = 0x07FF;		/*!< TX buffer MASK */
+	static const uint16_t	RMASK = 0x07FF;		/*!< RX buffer MASK */
 
 public:
-	static const uint16_t	SSIZE = 2048;		/*! Maximum TX buffer size */
+	static const uint16_t	SSIZE = 2048;		/*!< Maximum TX buffer size */
 
 private:
-	static const uint16_t	RSIZE = 2048;		/*! Maximum RX buffer size */
+	static const uint16_t	RSIZE = 2048;		/*!< Maximum RX buffer size */
 
-	uint16_t SBASE[SOCKETS];					/*! TX buffer base address */
-	uint16_t RBASE[SOCKETS];					/*! RX buffer base address */
+	uint16_t SBASE[SOCKETS];					/*!< TX buffer base address */
+	uint16_t RBASE[SOCKETS];					/*!< RX buffer base address */
 
 private:
-#ifndef SPI_HAS_EXTENDED_CS_PIN_HANDLING
-	#define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
-	#ifdef ARDUINO_ARCH_AVR
-		#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-			inline static void initSS()		{ DDRB  |=  _BV(4); };
-			inline static void setSS()		{ PORTB &= ~_BV(4); };
-			inline static void resetSS()	{ PORTB |=  _BV(4); };
 
-		#elif defined(__AVR_ATmega32U4__)
-			inline static void initSS()		{ DDRB  |=  _BV(6); };
-			inline static void setSS()		{ PORTB &= ~_BV(6); };
-			inline static void resetSS()	{ PORTB |=  _BV(6); };
 
-		#elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
-			inline static void initSS()		{ DDRB  |=  _BV(0); };
-			inline static void setSS()		{ PORTB &= ~_BV(0); };
-			inline static void resetSS()	{ PORTB |=  _BV(0); };
+/**
+ * \def SPI_ETHERNET_SETTINGS	Define the SPISettings object for SPI Transaction Mode, with the following settings:
+ *								SPI Clock: 8 MHz
+ *								Data Order: Most-Significant Bit first (MSBFIRST)
+ *								SPI Mode: Mode 0
+ */
+#define SPI_ETHERNET_SETTINGS SPISettings(8000000, MSBFIRST, SPI_MODE0)
 
-		#else
-			inline static void initSS()		{ DDRB  |=  _BV(2); };
-			inline static void setSS()		{ PORTB &= ~_BV(2); };
-			inline static void resetSS()	{ PORTB |=  _BV(2); };
+/* SPI CS pin handling for AVR devices */
+#ifdef ARDUINO_ARCH_AVR
 
-		#endif
-	#elif defined(__ARDUINO_ARC__)
-		inline static void initSS()			{ pinMode(10, OUTPUT); };
-		inline static void setSS()			{ digitalWrite(10, LOW); };
-		inline static void resetSS()		{ digitalWrite(10, HIGH); };
+	/* Arduino Mega and Arduino Mega 2560 */
+	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+		inline static void initSS()		{ DDRB  |=  _BV(4); };
+		inline static void setSS()		{ PORTB &= ~_BV(4); };
+		inline static void resetSS()	{ PORTB |=  _BV(4); };
 
+	/* Arduino Leonardo; possibly Teensy 2.0 and other ATmega32U4-based boards? */
+	#elif defined(__AVR_ATmega32U4__)
+		inline static void initSS()		{ DDRB  |=  _BV(6); };
+		inline static void setSS()		{ PORTB &= ~_BV(6); };
+		inline static void resetSS()	{ PORTB |=  _BV(6); };
+
+	/* Teensy++ 2.0 ?? */
+	#elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
+		inline static void initSS()		{ DDRB  |=  _BV(0); };
+		inline static void setSS()		{ PORTB &= ~_BV(0); };
+		inline static void resetSS()	{ PORTB |=  _BV(0); };
+
+	/* "Generic" Arduino devices (ie: Arduino Uno (ATmega328P), etc.) */
+	#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+		inline static void initSS()		{ DDRB  |=  _BV(2); };
+		inline static void setSS()		{ PORTB &= ~_BV(2); };
+		inline static void resetSS()	{ PORTB |=  _BV(2); };
+
+	/* Any other "Generic" Arduino devices */
 	#else
-		inline static void initSS() {
-			*portModeRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS))   |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
-		}
-		inline static void setSS() {
-			*portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) &= ~digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
-		}
-		inline static void resetSS() {
-			*portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
-		}
-
+		inline static void initSS()		{ pinMode(10, OUTPUT);		};
+		inline static void setSS()		{ digitalWrite(10, LOW);	};
+		inline static void resetSS()	{ digitalWrite(10, HIGH);	};
 	#endif
-#else	/* (#ifndef) SPI_HAS_EXTENDED_CS_PIN_HANDLING */
-	/*! Use of EXTENDED_CS_PIN_HANDLING does not require functions 'initSS()', 'setSS()', or 'resetSS()' */
-	#define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
 
-#endif	/* (#ifndef) SPI_HAS_EXTENDED_CS_PIN_HANDLING */
+/* SPI CS pin handling for ARC devices (Arduino 101) */
+#elif defined(__ARDUINO_ARC__)
+	inline static void initSS()			{ pinMode(10, OUTPUT);		};
+	inline static void setSS()			{ digitalWrite(10, LOW);	};
+	inline static void resetSS()		{ digitalWrite(10, HIGH);	};
+
+/* SPI CS pin handing for all other devices */
+#else
+	inline static void initSS()		{
+		*portModeRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS))   |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
+	}
+	inline static void setSS()		{
+		*portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) &= ~digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
+	}
+	inline static void resetSS()	{
+		*portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
+	}
+#endif
 };
 
 
 extern W5100Class W5100;
 
 
+/**
+ * \fn readSn	Read data from a socket
+ *
+ * \param _s	The socket from which data shall be read
+ * \param _addr	The address at which the data to be read is located
+ */
 uint8_t W5100Class::readSn(SOCKET _s, uint16_t _addr) {
 	return read(CH_BASE + _s * CH_SIZE + _addr);
 }
 
 
+/**
+ * \fn writeSn	Write data to a socket
+ *
+ * \param _s	The socket to which data shall be written
+ * \param _addr	The address at which the data to be written shall be located
+ * \param _data	The data to write to the socket
+ */
 uint8_t W5100Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t _data) {
 	return write(CH_BASE + _s * CH_SIZE + _addr, _data);
 }
@@ -431,21 +460,30 @@ uint16_t W5100Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t 
 }
 
 
+/**
+ * \fn getGatewayIP	Get the current gateway IP address
+ */
 void W5100Class::getGatewayIp(uint8_t *_addr) {
 	readGAR(_addr);
 }
 
-
+/**
+ * \fn setGatewayIP	Set the gateway IP address
+ */
 void W5100Class::setGatewayIp(uint8_t *_addr) {
 	writeGAR(_addr);
 }
 
-
+/**
+ * \fn getSubnetMask	Get the current subnet mask
+ */
 void W5100Class::getSubnetMask(uint8_t *_addr) {
 	readSUBR(_addr);
 }
 
-
+/**
+ * \fn setSubnetMask	Set the subnet mask
+ */
 void W5100Class::setSubnetMask(uint8_t *_addr) {
 	writeSUBR(_addr);
 }
