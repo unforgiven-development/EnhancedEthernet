@@ -65,7 +65,7 @@ int EthernetClient::connect(IPAddress ip, uint16_t port) {
 	_srcport++;
 
 	if (_srcport == 0) {
-		_srcport = 49152;			/* Use IANA recommended ephemeral port range 49152-65535 */
+		_srcport = random(49152, 65535);			/*!< \note Use a random port in the IANA recommended ephemeral port range 49152-65535 */
 	}
 
 	socket(_sock, SnMR::TCP, _srcport, 0);
