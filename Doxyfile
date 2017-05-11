@@ -1080,7 +1080,7 @@ VERBATIM_HEADERS       = YES
 # generated with the -Duse-libclang=ON option for CMake.
 # The default value is: NO.
 
-CLANG_ASSISTED_PARSING = NO
+CLANG_ASSISTED_PARSING = YES
 
 # If clang assisted parsing is enabled you can provide the compiler with command
 # line options that you would normally use when invoking the compiler. Note that
@@ -1332,7 +1332,7 @@ GENERATE_HTMLHELP      = YES
 # written to the html output directory.
 # This tag requires that the tag GENERATE_HTMLHELP is set to YES.
 
-CHM_FILE               = EnhancedEthernet.chm
+CHM_FILE               = D:/Documents/CHM/EnhancedEthernet.chm
 
 # The HHC_LOCATION tag can be used to specify the location (absolute path
 # including file name) of the HTML help compiler (hhc.exe). If non-empty,
@@ -1534,7 +1534,7 @@ FORMULA_TRANSPARENT    = YES
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-USE_MATHJAX            = YES
+USE_MATHJAX            = NO
 
 # When MathJax is enabled you can set the default output format to be used for
 # the MathJax output. See the MathJax site (see:
@@ -2377,7 +2377,7 @@ DIRECTORY_GRAPH        = YES
 # The default value is: png.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_IMAGE_FORMAT       = svg
+DOT_IMAGE_FORMAT       = png
 
 # If DOT_IMAGE_FORMAT is set to svg, then this option can be set to YES to
 # enable generation of interactive SVG images that allow zooming and panning.
@@ -2389,7 +2389,7 @@ DOT_IMAGE_FORMAT       = svg
 # The default value is: NO.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-INTERACTIVE_SVG        = YES
+INTERACTIVE_SVG        = NO
 
 # The DOT_PATH tag can be used to specify the path where the dot tool can be
 # found. If left blank, it is assumed the dot tool can be found in the path.
