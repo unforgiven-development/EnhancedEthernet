@@ -100,6 +100,19 @@ public:
 */
 
 
+/**
+ * \class SnIR
+ *
+ *
+ * \var SEND_OK	Triggers a hardware interrupt, and sets register value to '1' if send operation is completed.
+ * \var TIMEOUT	Triggers a hardware interrupt, and sets register value to '1' if timeout occurs during connection
+ *				establishment or termination, or during data transmission.
+ * \var RECV	Triggers a hardware interrupt, and sets register value to '1' when W5100 receives data. The same action
+ *				occurs if received data remains after executing the CMD_RECV command.
+ * \var DISCON	Triggers a hardware interrupt, and sets register value to '1' if connection termination is requested or
+ *				finished.
+ * \var CON		Triggers a hardware interrupt, and sets register value to '1' if connection is established.
+ */
 class SnIR {
 public:
 	static const uint8_t SEND_OK						= 0x10;

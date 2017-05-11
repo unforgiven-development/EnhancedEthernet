@@ -21,10 +21,12 @@ extern "C" {
 uint16_t EthernetClient::_srcport = 49152;			/* Use IANA recommended ephemeral port range 49152-65535 */
 
 EthernetClient::EthernetClient() : _sock(MAX_SOCK_NUM) {
+	/* EthernetClient Constructor */
 }
 
 
 EthernetClient::EthernetClient(uint8_t sock) : _sock(sock) {
+	/* EthernetClient Contructor */
 }
 
 
