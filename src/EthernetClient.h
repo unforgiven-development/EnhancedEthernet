@@ -1,8 +1,10 @@
-/*
- * src/EthernetClient.h
+/**
+ * \file EthernetClient.h
+ *
  * COMPONENT OF: Arduino Library "EnhancedEthernet"
  *
  */
+
 
 #ifndef __ETHERNETCLIENT_H__
 #define __ETHERNETCLIENT_H__
@@ -69,7 +71,6 @@ public:
 	uint8_t getSocketNumber();
 
 	friend class EthernetServer;
-
 	using Print::write;
 
 private:

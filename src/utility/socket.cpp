@@ -1,7 +1,9 @@
 /*
- * src/utility/socket.cpp
- * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ * \file socket.cpp	Provides TCP/IP socket interface functionality.
  *
+ * \author	Gerad Munsch <gmunsch@unforgivendevelopment.com>
+ * \author	The Arduino Project (various contributors)
+ * \author	WIZnet
  */
 
 
@@ -9,17 +11,27 @@
 #include "socket.h"
 
 
+/**
+ * \var local_port	Provides a global variable to hold the local TCP/IP port number.
+ */
 static uint16_t local_port;
 
 
 
 /**
- * @brief	This Socket function initialize the channel in perticular mode, and set the port and wait for W5100 done it.
- * @return 	1 for success else 0.
+ * \fn socket	Initializes a socket in a particular protocol mode, set the port, and wait for the W5100 hardware to
+ *				complete the operation.
+ *
+ * \brief Initializes a new socket.
+ *
+ * \return		Indicates whether the new socket was successfully initialized.
+ * \retval	1	Indicates that the socket was successfully initialized.
+ * \retval	0	Indicates that there was an error initializing the socket.
  */
 uint8_t socket(SOCKET s, uint8_t protocol, uint16_t port, uint8_t flag) {
 	if ((protocol == SnMR::TCP) || (protocol == SnMR::UDP) || (protocol == SnMR::IPRAW) || (protocol == SnMR::MACRAW) || (protocol == SnMR::PPPOE)) {
 		close(s);
+
 		SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
 		W5100.writeSnMR(s, protocol | flag);
 

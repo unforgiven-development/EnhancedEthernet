@@ -1,6 +1,5 @@
 /*
- * src/utility/w5100.cpp
- * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ * \file w5100.cpp
  *
  * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>
  * Copyright (c) 2010 by Arduino LLC. All rights reserved.
@@ -160,11 +159,13 @@ uint8_t W5100Class::write(uint16_t _addr, uint8_t _data) {
 uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
 	for (uint16_t i = 0; i < _len; i++) {
 		setSS();
+
 		SPI.transfer(0xF0);
 		SPI.transfer(_addr >> 8);
 		SPI.transfer(_addr & 0xFF);
 		_addr++;
 		SPI.transfer(_buf[i]);
+
 		resetSS();
 	}
 
@@ -173,12 +174,13 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len) {
 
 
 uint8_t W5100Class::read(uint16_t _addr) {
-
 	setSS();
+
 	SPI.transfer(0x0F);
 	SPI.transfer(_addr >> 8);
 	SPI.transfer(_addr & 0xFF);
 	uint8_t _data = SPI.transfer(0);
+
 	resetSS();
 
 	return _data;
@@ -188,11 +190,13 @@ uint8_t W5100Class::read(uint16_t _addr) {
 uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len) {
 	for (uint16_t i = 0; i < _len; i++) {
 		setSS();
+
 		SPI.transfer(0x0F);
 		SPI.transfer(_addr >> 8);
 		SPI.transfer(_addr & 0xFF);
 		_addr++;
 		_buf[i] = SPI.transfer(0);
+
 		resetSS();
 	}
 

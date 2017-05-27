@@ -4,8 +4,8 @@
  *
  */
 
-#ifndef	__UTILITY_SOCKET_H__
-#define	__UTILITY_SOCKET_H__
+#ifndef	_UTILITY_SOCKET_H__
+#define	_UTILITY_SOCKET_H__
 
 
 #include "utility/w5100.h"
@@ -69,21 +69,27 @@ extern int startUDP(SOCKET s, uint8_t* addr, uint16_t port);
 
 
 /**
- * @brief This function copies up to len bytes of data from buf into a UDP datagram to be
- * sent later by sendUDP.  Allows datagrams to be built up from a series of bufferData calls.
+ * \fn bufferData	This function copies up to len bytes of data from buf into a UDP datagram to be sent later by
+ *					sendUDP.  Allows datagrams to be built up from a series of bufferData calls.
  *
- * @return Number of bytes successfully buffered
+ * \brief Copies data from a buffer into an ("under construction") UDP datagram, to be sent later.
+ *
+ * \return	Number of bytes successfully added to the UDP datagram buffer.
  */
 uint16_t bufferData(SOCKET s, uint16_t offset, const uint8_t* buf, uint16_t len);
 
 
 /**
- * @brief Send a UDP datagram built up from a sequence of startUDP followed by one or more
- * calls to bufferData.
+ * \fn sendUDP	Send a UDP datagram, which was built up from a sequence of startUDP, followed by one-or-more calls to
+ *				bufferData (this sequence "builds" a UDP packet suitable for transmission).
  *
- * @return 1 if the datagram was successfully sent, or 0 if there was an error
+ * \brief Send a "pre-built" UDP datagram.
+ *
+ * \return	Provides indication as to whether the UDP datagram was successfully transmitted.
+ * \retval	1	The UDP datagram was successfully transmitted.
+ * \retval	0	Transmission failed due to an error.
  */
 int sendUDP(SOCKET s);
 
 
-#endif	/* __UTILITY_SOCKET_H__ */
+#endif	/* _UTILITY_SOCKET_H__ */

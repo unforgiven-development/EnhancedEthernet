@@ -1,6 +1,5 @@
 /*
- * src/utility/w5100.h
- * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ * \file w5100.h
  *
  * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>
  * Copyright (c) 2010 by Arduino LLC. All rights reserved.
@@ -11,8 +10,8 @@
  * published by the Free Software Foundation.
  */
 
-#ifndef	__UTILITY_W5100_H__
-#define	__UTILITY_W5100_H__
+#ifndef	_UTILITY_W5100_H__
+#define	_UTILITY_W5100_H__
 
 #include <SPI.h>
 
@@ -531,4 +530,4 @@ void W5100Class::setRetransmissionCount(uint8_t _retry) {
 	writeRCR(_retry);
 }
 
-#endif	/* __UTILITY_W5100_H__ */
+#endif	/* _UTILITY_W5100_H__ */

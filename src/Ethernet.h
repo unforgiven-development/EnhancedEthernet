@@ -4,8 +4,8 @@
  *
  */
 
-#ifndef __ETHERNET_H__
-#define __ETHERNET_H__
+#ifndef _ETHERNET_H__
+#define _ETHERNET_H__
 
 
 #include <inttypes.h>
@@ -27,15 +27,18 @@ public:
 	static uint16_t _server_port[MAX_SOCK_NUM];
 
 	/**
-	 * Initialize the Ethernet shield, with the provided MAC address, and attempt to configure the TCP/IP parameters via
-	 * DHCP discovery.
+	 * \fn begin	Initialize the Ethernet shield, with the provided MAC address, and attempt to configure the TCP/IP
+	 *				parameters via DHCP.
 	 *
-	 * @brief Initialize the Ethernet shield with a specified MAC address, attempt to use DHCP
+	 * \brief Initialize the Ethernet shield with a specified MAC address, attempting to use DHCP.
 	 *
-	 * @return Indicates whether DHCP configuration was successful, or not.
-	 * @retval 0 DHCP configuration failed.
-	 * @retval 1 DHCP configuration was successful.
+	 * \param[in]	mac_address		An array of 6 bytes (uint8_t, specifically) containing the assigned MAC address.
+	 * \param[in]	timeout			An optional parameter, specifying the timeout.
+	 * \param[in]	responseTimeout	An optional parameter, specifying the response timeout.
 	 *
+	 * \return		Indicates whether initialization of the Ethernet controller via DHCP was successful (or not).
+	 * \retval	0	DHCP configuration failed.
+	 * \retval	1	DHCP configuration was successful.
 	 */
 	int begin(uint8_t *mac_address, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
 
@@ -57,4 +60,4 @@ public:
 
 extern EthernetClass Ethernet;
 
-#endif	/* __ETHERNET_H__ */
+#endif	/* _ETHERNET_H__ */

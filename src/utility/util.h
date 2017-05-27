@@ -1,11 +1,10 @@
 /*
- * src/utility/util.h
- * COMPONENT OF: Arduino Library "EnhancedEthernet"
+ * \file util.h
  *
  */
 
-#ifndef __UTILITY_UTIL_H__
-#define __UTILITY_UTIL_H__
+#ifndef _UTILITY_UTIL_H__
+#define _UTILITY_UTIL_H__
 
 
 #define htons(x) (((x)<< 8 & 0xFF00) | ((x)>> 8 & 0x00FF))
@@ -15,4 +14,4 @@
 #define ntohl(x) htonl(x)
 
 
-#endif	/* __UTILITY_UTIL_H__ */
+#endif	/* _UTILITY_UTIL_H__ */

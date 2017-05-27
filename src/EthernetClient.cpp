@@ -1,6 +1,9 @@
-/*
- * src/EthernetClient.cpp
- * COMPONENT OF: Arduino Library "EnhancedEthernet"
+/**
+ * \file EthernetClient.cpp Provides a network client implementation for Ethernet connections.
+ *
+ * \author  Gerad Munsch <gmunsch@unforgivendevelopment.com>
+ * \author  The Arduino Project (various contributors)
+ *
  *
  */
 

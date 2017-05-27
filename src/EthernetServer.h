@@ -1,11 +1,12 @@
-/*
- * src/EthernetServer.h
+/**
+ * \file EthernetServer.h
+ *
  * COMPONENT OF: Arduino Library "EnhancedEthernet"
  *
  */
 
-#ifndef __ETHERNETSERVER_H__
-#define __ETHERNETSERVER_H__
+#ifndef _ETHERNETSERVER_H__
+#define _ETHERNETSERVER_H__
 
 #include "Server.h"
 
@@ -27,4 +28,4 @@ public:
 
 };
 
-#endif	/* __ETHERNETSERVER_H__ */
+#endif	/* _ETHERNETSERVER_H__ */
