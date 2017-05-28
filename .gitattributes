@@ -5,45 +5,91 @@
 # the project's git repository.
 #
 
-## Force UNIX-style line endings for source files ##
-*.c						text eol=lf
-*.h						text eol=lf
-*.cpp					text eol=lf
-*.hpp					text eol=lf
-*.ino					text eol=lf
-*.pde					text eol=lf
-*.sh					text eol=lf
-*.subr					text eol=lf
-*.csh					text eol=lf
-*.fish					text eol=lf
-Doxyfile				text eol=lf
+## Force UNIX-style line endings for (most) source files ##
+*.c								text eol=lf
+*.h								text eol=lf
+*.cpp							text eol=lf
+*.hpp							text eol=lf
+*.ino							text eol=lf
+*.pde							text eol=lf
+*.sh							text eol=lf
+*.subr							text eol=lf
+*.csh							text eol=lf
+*.fish							text eol=lf
+Doxyfile						text eol=lf
+
+
+## Set attributes for Visual Studio projects, and source files ##
+*.cs							text eol=crlf diff=csharp
+*.vb							text eol=crlf
+*.sln							text eol=crlf merge=union
+*.csproj						text eol=crlf merge=union
+*.vbproj						text eol=crlf merge=union
+*.fsproj						text eol=crlf merge=union
+*.dbproj						text eol=crlf merge=union
+*.sqlproj						text eol=crlf merge=union
+*.cshtml						text eol=crlf
+*.resx							text eol=crlf
+*.asax							text eol=crlf
+*.xaml							text eol=crlf
+*.vspscc						text eol=crlf
+*.pubxml						text eol=crlf
+*.svc							text eol=crlf
+*.svcinfo						text eol=crlf
+*.svcmap						text eol=crlf
+*.disco							text eol=crlf
+*.wsdl							text eol=crlf
+*.datasource					text eol=crlf
+*.ClientConfig					text eol=crlf
+*.csproj.user					text eol=crlf
+*.vbproj.user					text eol=crlf
+*.fsproj.user					text eol=crlf
+*.dbproj.user					text eol=crlf
+*.sqlproj.user					text eol=crlf
+packages.config					text eol=crlf
+Package.appxmanifest			text eol=crlf
+App.config						text eol=crlf
+App.Release.config				text eol=crlf
+App.Debug.config				text eol=crlf
+Web.config						text eol=crlf
+Web.Release.config				text eol=crlf
+Web.Debug.config				text eol=crlf
+ApplicationInsights.config		text eol=crlf
+Settings.settings				text eol=crlf
+*.dbmdl							binary
+*.nupkg							binary
+*.suo							binary
 
 
 ## Force Windows-style line endings for plain-text files ##
-*.txt					text eol=crlf
-*.properties			text eol=crlf
-*.adoc					text eol=crlf
-*.md					text eol=crlf
-*.log					text eol=crlf
-*.xml					text eol=crlf
-*.htm					text eol=crlf
-*.html					text eol=crlf
-*.css					text eol=crlf
-*.js					text eol=crlf
-*.svg					text eol=crlf
-*.csv					text eol=crlf
-.gitignore				text eol=crlf
-.gitattributes			text eol=crlf
-AUTHORS					text eol=crlf
+*.txt							text eol=crlf
+*.properties					text eol=crlf
+*.adoc							text eol=crlf
+*.md							text eol=crlf
+*.log							text eol=crlf
+*.xml							text eol=crlf
+*.xsd							text eol=crlf
+*.htm							text eol=crlf
+*.html							text eol=crlf
+*.css							text eol=crlf
+*.js							text eol=crlf
+*.svg							text eol=crlf
+*.csv							text eol=crlf
+*.sql							text eol=crlf
+.gitignore						text eol=crlf
+.gitattributes					text eol=crlf
+AUTHORS							text eol=crlf
 
 
 ## Explicitly set some file types as binary ##
-*.png					binary
-*.jpg					binary
-*.jpeg					binary
-*.gif					binary
-*.pdf					binary
-*.docx					binary
-*.xlsx					binary
-*.pptx					binary
-*.zip					binary
+*.ico							binary
+*.png							binary
+*.jpg							binary
+*.jpeg							binary
+*.gif							binary
+*.pdf							binary
+*.docx							binary
+*.xlsx							binary
+*.pptx							binary
+*.zip							binary
+*.pfx							binary

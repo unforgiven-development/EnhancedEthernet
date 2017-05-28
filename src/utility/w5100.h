@@ -384,36 +384,42 @@ private:
 /* SPI CS pin handling for AVR devices */
 #ifdef ARDUINO_ARCH_AVR
 
-	/* Arduino Mega and Arduino Mega 2560 */
-	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-		inline static void initSS()		{ DDRB  |=  _BV(4); };
-		inline static void setSS()		{ PORTB &= ~_BV(4); };
-		inline static void resetSS()	{ PORTB |=  _BV(4); };
+/* Arduino Mega and Arduino Mega 2560 */
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+	inline static void initSS()		{ DDRB  |=  _BV(4); };
+	inline static void setSS()		{ PORTB &= ~_BV(4); };
+	inline static void resetSS()	{ PORTB |=  _BV(4); };
 
-	/* Arduino Leonardo; possibly Teensy 2.0 and other ATmega32U4-based boards? */
-	#elif defined(__AVR_ATmega32U4__)
-		inline static void initSS()		{ DDRB  |=  _BV(6); };
-		inline static void setSS()		{ PORTB &= ~_BV(6); };
-		inline static void resetSS()	{ PORTB |=  _BV(6); };
+/* Arduino Leonardo; possibly Teensy 2.0 and other ATmega32U4-based boards? */
+#elif defined(__AVR_ATmega32U4__)
+	inline static void initSS()		{ DDRB  |=  _BV(6); };
+	inline static void setSS()		{ PORTB &= ~_BV(6); };
+	inline static void resetSS()	{ PORTB |=  _BV(6); };
 
-	/* Teensy++ 2.0 ?? */
-	#elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
-		inline static void initSS()		{ DDRB  |=  _BV(0); };
-		inline static void setSS()		{ PORTB &= ~_BV(0); };
-		inline static void resetSS()	{ PORTB |=  _BV(0); };
+/* Teensy++ 2.0 ?? */
+#elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
+	inline static void initSS()		{ DDRB  |=  _BV(0); };
+	inline static void setSS()		{ PORTB &= ~_BV(0); };
+	inline static void resetSS()	{ PORTB |=  _BV(0); };
 
-	/* "Generic" Arduino devices (ie: Arduino Uno (ATmega328P), etc.) */
-	#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
-		inline static void initSS()		{ DDRB  |=  _BV(2); };
-		inline static void setSS()		{ PORTB &= ~_BV(2); };
-		inline static void resetSS()	{ PORTB |=  _BV(2); };
+/* "Generic" Arduino devices (ie: Arduino Uno (ATmega328P), etc.) */
+#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+	inline static void initSS()		{ DDRB  |=  _BV(2); };
+	inline static void setSS()		{ PORTB &= ~_BV(2); };
+	inline static void resetSS()	{ PORTB |=  _BV(2); };
+#if (ETHERNET_USE_INTERRUPTS == 1)
+	inline static void atchInt()	{};
+	inline static void dtchInt()	{};
+	inline static void enInts()		{};
+	inline static void disInts()	{};
+#endif	/* ETHERNET_USE_INTERRUPTS == 1 */
 
-	/* Any other "Generic" Arduino devices */
-	#else
-		inline static void initSS()		{ pinMode(10, OUTPUT);		};
-		inline static void setSS()		{ digitalWrite(10, LOW);	};
-		inline static void resetSS()	{ digitalWrite(10, HIGH);	};
-	#endif
+/* Any other "Generic" Arduino devices */
+#else
+	inline static void initSS()		{ pinMode(10, OUTPUT);		};
+	inline static void setSS()		{ digitalWrite(10, LOW);	};
+	inline static void resetSS()	{ digitalWrite(10, HIGH);	};
+#endif
 
 /* SPI CS pin handling for ARC devices (Arduino 101) */
 #elif defined(__ARDUINO_ARC__)
@@ -433,6 +439,20 @@ private:
 		*portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
 	}
 #endif
+
+/**
+ * Declare "NULL" functions if ETHERNET_USE_INTERRUPTS == 0 or is undefined, as this will limit the need to use lots of
+ * #ifdef statements throughout the code of the various functions.
+ */
+#if (ETHERNET_USE_INTERRUPTS == 0) || !defined(ETHERNET_USE_INTERRUPTS)
+	inline static void atchInt()	{};
+	inline static void dtchInt()	{};
+	inline static void enInts()		{};
+	inline static void disInts()	{};
+#endif
+
+
+
 };
 
 
