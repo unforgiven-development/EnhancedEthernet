@@ -374,10 +374,10 @@ private:
 
 
 /**
- * \def SPI_ETHERNET_SETTINGS	Define the SPISettings object for SPI Transaction Mode, with the following settings:
- *								SPI Clock: 8 MHz
- *								Data Order: Most-Significant Bit first (MSBFIRST)
- *								SPI Mode: Mode 0
+ * Define the SPISettings object for SPI Transaction Mode, with the following settings:
+ * \li <B>SPI Clock:</B> 8 MHz
+ * \li <B>Data Order:</B> Most-Significant Bit first (MSBFIRST)
+ * \li <B>SPI Mode:</B> Mode 0
  */
 #define SPI_ETHERNET_SETTINGS SPISettings(8000000, MSBFIRST, SPI_MODE0)
 
@@ -460,7 +460,7 @@ extern W5100Class W5100;
 
 
 /**
- * \fn readSn	Read data from a socket
+ * Read data from a socket
  *
  * \param _s	The socket from which data shall be read
  * \param _addr	The address at which the data to be read is located
@@ -471,7 +471,7 @@ uint8_t W5100Class::readSn(SOCKET _s, uint16_t _addr) {
 
 
 /**
- * \fn writeSn	Write data to a socket
+ * Write data to a specific socket
  *
  * \param _s	The socket to which data shall be written
  * \param _addr	The address at which the data to be written shall be located

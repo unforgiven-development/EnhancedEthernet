@@ -9,10 +9,8 @@
 #include "Dhcp.h"
 
 // XXX: don't make assumptions about the value of MAX_SOCK_NUM.
-uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
-	0, 0, 0, 0 };
-uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = {
-	0, 0, 0, 0 };
+uint8_t EthernetClass::_state[MAX_SOCK_NUM]			= { 0, 0, 0, 0 };
+uint16_t EthernetClass::_server_port[MAX_SOCK_NUM]	= { 0, 0, 0, 0 };
 
 
 int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned long responseTimeout) {
@@ -23,7 +21,7 @@ int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned l
 	W5100.init();
 	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
 	W5100.setMACAddress(mac_address);
-	W5100.setIPAddress(IPAddress(0,0,0,0).raw_address());
+	W5100.setIPAddress(IPAddress(0, 0, 0, 0).raw_address());
 	SPI.endTransaction();
 
 	// Now try to get our config info from a DHCP server
