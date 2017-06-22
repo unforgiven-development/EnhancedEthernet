@@ -221,6 +221,12 @@ public:
 	uint16_t getTXFreeSize(SOCKET s);
 	uint16_t getRXReceivedSize(SOCKET s);
 
+	/**
+	 * Handle hardware interrupt requests from the W5100.
+	 * \brief ISR
+	 */
+	void W5100_ISR();
+
 
 	/* -------------------------------------------------------------------------------------------------------------- */
 	/* --- W5100: Common Registers (summary located at section 3.1 of datasheet) ------------------------------------ */

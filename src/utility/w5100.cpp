@@ -213,3 +213,48 @@ void W5100Class::execCmdSn(SOCKET s, SockCMD _cmd) {
 		/* (wait loop...) */
 	}
 }
+
+
+void W5100Class::W5100_ISR() {
+	/* Handle hardware interrupts from the W5100 */
+#if (ETHERNET_USE_INTERRUPTS == 1)
+	uint8_t int_val;
+	noInterrupts();
+
+	readIR(int_val);
+
+	do {
+		if (int_val & IR::CONFLICT) {
+			/* IP CONFLICT */
+		}
+
+		if (int_val & IR::UNREACH) {
+			/* IP/port unreachable */
+		}
+
+		writeIR(0xF0);	/* Clear non-socket interrupts */
+
+		if (int_val & IR::SOCK0) {
+			/* Socket 0 interrupt */
+		}
+
+		if (int_val & IR::SOCK1) {
+			/* Socket 1 interrupt */
+		}
+
+		if (int_val & IR::SOCK2) {
+			/* Socket 2 interrupt */
+		}
+
+		if (int_val & IR::SOCK3) {
+			/* Socket 3 interrupt */
+		}
+
+		readIR(int_val);
+
+	} while (int_val != 0x00);
+
+	interrupts();
+#endif
+
+}
