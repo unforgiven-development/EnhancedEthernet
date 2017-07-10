@@ -9,6 +9,18 @@ the world, via the internet. The **Ethernet library** _(as well as this **enhanc
 first generation of the official **Arduino Ethernet shield**, which utilizes the **WIZnet W5100** chipset.
 
 
+## Enhancements ##
+
+As implied by the name, there are some _enhancements_ to be expected.
+
+The primary enhancement _(which happened to be the motivation for this project)_ is the addition of hardware interrupt
+support for the **WIZnet W5100** Ethernet shield on AVR-based Arduino platforms.
+
+It's likely that additional enhancements will work their way in, as well. A list can be found below:
+* Hardware Interrupt Support
+
+
+
 ## License ##
 
 	Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>

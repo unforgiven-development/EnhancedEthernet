@@ -39,28 +39,29 @@
  */
 
 
-#ifndef __ETHERNETUDP_H__
-#define __ETHERNETUDP_H__
+#ifndef _ETHERNETUDP_H__
+#define _ETHERNETUDP_H__
 
 /* -----[ INCLUDES ]----- */
 #include <Udp.h>
 
 
 /**
- * \def UDP_TX_PACKET_MAX_SIZE	Defines the maximum size of a UDP packet to be transmitted.
+ * \def UDP_TX_PACKET_MAX_SIZE
+ * Defines the maximum size of a UDP packet to be transmitted.
  */
 #define UDP_TX_PACKET_MAX_SIZE 24
 
 
 class EthernetUDP : public UDP {
 private:
-	uint16_t _port;				/*! local port to listen on */
+	uint16_t  _port;			/*! local port to listen on */
 	IPAddress _remoteIP;		/*! remote IP address for the incoming packet whilst it's being processed */
-	uint16_t _remotePort;		/*! remote port for the incoming packet whilst it's being processed */
-	uint16_t _offset;			/*! offset into the packet being sent */
+	uint16_t  _remotePort;		/*! remote port for the incoming packet whilst it's being processed */
+	uint16_t  _offset;			/*! offset into the packet being sent */
 
 protected:
-	uint8_t _sock;				/*! socket ID for W5100 */
+	uint8_t  _sock;				/*! socket ID for W5100 */
 	uint16_t _remaining;		/*! remaining bytes of incoming packet yet to be processed */
 
 public:
@@ -76,7 +77,7 @@ public:
 	 *
 	 * \brief Start listening on UDP port
 	 *
-	 * \param[in] port	The UDP port number to open the listening socket on
+	 * \param[in]	port	The UDP port number to open the listening socket on
 	 *
 	 * \return		Indicates whether the operation was successful or not.
 	 * \retval 1	Success
@@ -109,6 +110,7 @@ public:
 	/* --- Sending UDP packets --- */
 
 	/**
+	 * \fn virtual int beginPacket(IPAddress ip, uint16_t port)
 	 * Start building a packet to send to the remote host, specified by the given IP address and port.
 	 *
 	 * \brief Start building a UDP packet, with the destination specified by IP address.
@@ -123,6 +125,7 @@ public:
 	virtual int beginPacket(IPAddress ip, uint16_t port);
 
 	/**
+	 * \overload virtual int beginPacket(const char *host, uint16_t port)
 	 * Start building a packet to send to the remote host, specified by the given hostname and port. A DNS query will be
 	 * be executed, attempting to resolve the hostname to an IP address.
 	 *
@@ -151,6 +154,7 @@ public:
 
 
 	/**
+	 * \fn virtual size_t write(uint8_t byte)
 	 * Write a single byte into the packet that is currently "under construction".
 	 *
 	 * \brief Write a single byte into the packet.
@@ -160,6 +164,7 @@ public:
 	virtual size_t write(uint8_t byte);
 
 	/**
+	 * \overload virtual size_t write(const uint8_t *buffer, size_t size)
 	 * Write a specified amount of bytes from a buffer into the packet that is currently "under construction".
 	 *
 	 * \brief Write multiple bytes into the packet.
@@ -192,7 +197,12 @@ public:
 	 */
 	virtual int available();
 
-	// Read a single byte from the current packet
+	/**
+	 * \fn virtual int read()
+	 * \brief Read a single byte from the current packet
+	 *
+	 * \return	Returns the single byte that was read from the current packet
+	 */
 	virtual int read();
 
 	// Read up to len bytes from the current packet and place them into buffer
@@ -209,10 +219,14 @@ public:
 	virtual void flush();	// Finish reading the current packet
 
 	// Return the IP address of the host who sent the current incoming packet
-	virtual IPAddress remoteIP() { return _remoteIP; };
+	virtual IPAddress remoteIP() {
+		return _remoteIP;
+	};
 
 	// Return the port of the host who sent the current incoming packet
-	virtual uint16_t remotePort() { return _remotePort; };
+	virtual uint16_t remotePort() {
+		return _remotePort;
+	};
 };
 
 #endif	/* __ETHERNETUDP_H__ */

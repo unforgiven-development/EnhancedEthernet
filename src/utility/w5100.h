@@ -10,16 +10,30 @@
  * published by the Free Software Foundation.
  */
 
-#ifndef	_UTILITY_W5100_H__
-#define	_UTILITY_W5100_H__
+#ifndef _UTILITY_W5100_H__
+#define _UTILITY_W5100_H__
+
 
 #include <SPI.h>
 
-#define ETHERNET_SHIELD_SPI_CS		10
-#define ETHERNET_SHIELD_SPI_IRQ		2
 
-#define MAX_SOCK_NUM				4
+#define ETHERNET_SHIELD_SPI_CS		10		/*! Defines the default Arduino pin used by the Ethernet shield for !CS */
+#define ETHERNET_SHIELD_SPI_IRQ		2		/*! Defines the default Arduino pin used by the Ethernet shield for IRQ */
 
+
+#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+/* Definitions specific to Arduino Uno and similar devices based on the ATmegaXX8 family */
+#define ETHERNET_USE_AVR_INTERRUPT	0		/*! Defines the external interrupt number on the AVR microcontroller */
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+/* Definitions specific to Arduino Mega and similar devices based on the ATmega1280/2560 family */
+#define ETHERNET_USE_AVR_INTERRUPT	4		/*! Defines the external interrupt number on the AVR microcontroller */
+#endif
+
+#define MAX_SOCK_NUM				4		/*! Defines the maximum amount of sockets supported by the W5100 */
+
+/**
+ * Defines the type \b SOCKET for use throughout the driver.
+ */
 typedef uint8_t SOCKET;
 
 
@@ -157,6 +171,13 @@ public:
 };
 
 
+/**
+ * \class W5100Class
+ * \brief Implements a driver for the W5100 Ethernet controller
+ *
+ * This class provides the core functionality for the W5100 driver, performing such functions as initializing the device
+ * at startup, low-level reading and writing of device registers, etc..
+ */
 class W5100Class {
 public:
 	void init();
@@ -171,7 +192,7 @@ public:
 
 
 	/**
-	 * @brief	 This function is being called by send() and sendto() function also.
+	 * \brief	 This function is being called by send() and sendto() function also.
 	 *
 	 * This function read the Tx write pointer register and after copy the data in buffer update the Tx write pointer
 	 * register. User should read upper byte first and lower byte later to get proper value.
@@ -180,11 +201,11 @@ public:
 
 
 	/**
-	 * @brief	A copy of send_data_processing that uses the provided ptr for the write offset.
+	 * \brief	A copy of send_data_processing that uses the provided ptr for the write offset.
 	 *			Only needed for the "streaming" UDP API, where a single UDP packet is built up over a number of calls to
 	 *			send_data_processing_ptr, because TX_WR doesn't seem to get updated correctly in those scenarios.
 	 *
-	 * @param ptr value to use in place of TX_WR.  If 0, then the value is read in from TX_WR
+	 * \param ptr value to use in place of TX_WR.  If 0, then the value is read in from TX_WR
 	 *
 	 * @return New value for ptr, to be used in the next call
 	 */
@@ -193,7 +214,7 @@ public:
 
 
 	/**
-	 * @brief	This function is being called by recv() also.
+	 * \brief This function is being called by recv() also.
 	 *
 	 * This function read the Rx read pointer register and after copy the data from receive buffer update the Rx write
 	 * pointer register. User should read upper byte first and lower byte later to get proper value.
@@ -374,12 +395,35 @@ private:
 
 
 /**
+ * \def SPI_ETHERNET_SETTINGS
  * Define the SPISettings object for SPI Transaction Mode, with the following settings:
  * \li <B>SPI Clock:</B> 8 MHz
  * \li <B>Data Order:</B> Most-Significant Bit first (MSBFIRST)
  * \li <B>SPI Mode:</B> Mode 0
  */
 #define SPI_ETHERNET_SETTINGS SPISettings(8000000, MSBFIRST, SPI_MODE0)
+
+
+/**
+ * SPI SS/CS (slave select/chip select) functions, as well as interrupt-related functions.
+ * ---------------------------------------------------------------------------------------------------------------------
+ * SPI SS/CS functions:
+ *
+ * \fn inline static void initSS()	Initialize the slave select pin, using the "lowest-level" technique available
+ * \fn inline static void setSS()	Set the slave select pin to active (low), using "low-level" techniques
+ * \fn inline static void resetSS()	Reset the slave select pin (high), using "low-level" techniques
+ *
+ * ---------------------------------------------------------------------------------------------------------------------
+ * \def ETHERNET_USE_INTERRUPTS
+ * Enables use of interrupt-based communcation with the W5100 when defined (optionally, with a value of \b 1 -- though
+ * just defining it should be adequate).
+ *
+ * ---------------------------------------------------------------------------------------------------------------------
+ * Interrupt-related functions:
+ *
+ * \fn inline static void atchInt()	Activates the appropriate external interrupt for digital pin 2 on the device.
+ * \fn inline static void dtchInt()	Disables activation of the ISR by means of the external interrupt on pin 2.
+ */
 
 /* SPI CS pin handling for AVR devices */
 #ifdef ARDUINO_ARCH_AVR
@@ -389,6 +433,12 @@ private:
 	inline static void initSS()		{ DDRB  |=  _BV(4); };
 	inline static void setSS()		{ PORTB &= ~_BV(4); };
 	inline static void resetSS()	{ PORTB |=  _BV(4); };
+#if (ETHERNET_USE_INTERRUPTS == 1)
+	inline static void atchInt()	(EIMSK |=   0x10)
+	inline static void dtchInt()	(EIMSK &= ~(0x10))
+	inline static void enInts()		{};
+	inline static void disInts()	{};
+#endif	/* ETHERNET_USE_INTERRUPTS == 1 */
 
 /* Arduino Leonardo; possibly Teensy 2.0 and other ATmega32U4-based boards? */
 #elif defined(__AVR_ATmega32U4__)
@@ -408,8 +458,8 @@ private:
 	inline static void setSS()		{ PORTB &= ~_BV(2); };
 	inline static void resetSS()	{ PORTB |=  _BV(2); };
 #if (ETHERNET_USE_INTERRUPTS == 1)
-	inline static void atchInt()	{};
-	inline static void dtchInt()	{};
+	inline static void atchInt()	(EIMSK |=   0x01)
+	inline static void dtchInt()	(EIMSK &= ~(0x01))
 	inline static void enInts()		{};
 	inline static void disInts()	{};
 #endif	/* ETHERNET_USE_INTERRUPTS == 1 */

@@ -1,6 +1,6 @@
-/*
- * src/EthernetUdp.cpp
- * COMPONENT OF: Arduino Library "EnhancedEthernet"
+/**
+ * \file EthernetUdp.cpp
+ * Provides the functions necessary for UDP communication
  *
  *  Udp.cpp: Library to send/receive UDP packets with the Arduino ethernet shield.
  *  This version only offers minimal wrapping of socket.c/socket.h
@@ -29,6 +29,7 @@
  * bjoern@cs.stanford.edu 12/30/2008
  */
 
+
 #include "utility/w5100.h"
 #include "utility/socket.h"
 #include "Ethernet.h"
@@ -39,7 +40,8 @@
 /**
  * Constructor
  */
-EthernetUDP::EthernetUDP() : _sock(MAX_SOCK_NUM) {}
+EthernetUDP::EthernetUDP() : _sock(MAX_SOCK_NUM) {
+}
 
 
 /**
@@ -184,7 +186,7 @@ int EthernetUDP::read() {
 }
 
 
-int EthernetUDP::read(unsigned char* buffer, size_t len) {
+int EthernetUDP::read(unsigned char *buffer, size_t len) {
 
 	if (_remaining > 0) {
 		int got;
@@ -256,7 +258,7 @@ uint8_t EthernetUDP::beginMulticast(IPAddress ip, uint16_t port) {
 	mac[4] = ip[2];
 	mac[5] = ip[3];
 
-	W5100.writeSnDIPR(_sock, rawIPAddress(ip));		/* 239.255.0.1 */
+	W5100.writeSnDIPR(_sock, rawIPAddress(ip));        /* 239.255.0.1 */
 	W5100.writeSnDPORT(_sock, port);
 	W5100.writeSnDHAR(_sock, mac);
 

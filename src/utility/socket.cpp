@@ -1,9 +1,11 @@
 /*
- * \file socket.cpp	Provides TCP/IP socket interface functionality.
+ * \file socket.cpp
+ * Provides TCP/IP socket interface functionality.
  *
- * \author	Gerad Munsch <gmunsch@unforgivendevelopment.com>
- * \author	The Arduino Project (various contributors)
- * \author	WIZnet
+ * \author		Gerad Munsch <gmunsch@unforgivendevelopment.com>
+ * \author		The Arduino Project (various contributors)
+ * \author		WIZnet
+ * \date		?-2017
  */
 
 
@@ -12,7 +14,7 @@
 
 
 /**
- * \var local_port	Provides a global variable to hold the local TCP/IP port number.
+ * Provides a global variable to hold the local TCP/IP port number.
  */
 static uint16_t local_port;
 

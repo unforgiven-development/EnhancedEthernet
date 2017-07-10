@@ -1,5 +1,5 @@
-/*
- * src/EthernetServer.cpp
+/**
+ * \file EthernetServer.cpp
  * COMPONENT OF: Arduino Library "EnhancedEthernet"
  *
  */
@@ -7,9 +7,11 @@
 #include "utility/w5100.h"
 #include "utility/socket.h"
 
+
 extern "C" {
 	#include "string.h"
 }
+
 
 #include "Ethernet.h"
 #include "EthernetClient.h"
@@ -23,8 +25,14 @@ EthernetServer::EthernetServer(uint16_t port) {
 
 
 void EthernetServer::begin() {
+	/* Iterate through the hardware sockets...*/
 	for (int sock = 0; sock < MAX_SOCK_NUM; sock++) {
 		EthernetClient client(sock);
+
+		/*
+		 * ...and the first one that is available for use, start a \p Server instance, listening on the port we passed
+		 * to the \c EthernetServer(port) function earlier.
+		 */
 		if (client.status() == SnSR::CLOSED) {
 			socket(sock, SnMR::TCP, _port, 0);
 			listen(sock);
