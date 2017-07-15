@@ -21,10 +21,15 @@ static uint16_t local_port;
 
 
 /**
- * \fn socket	Initializes a socket in a particular protocol mode, set the port, and wait for the W5100 hardware to
- *				complete the operation.
+ * Initializes a socket in a particular protocol mode, set the port, and wait for the W5100 hardware to complete the
+ * operation.
  *
  * \brief Initializes a new socket.
+ *
+ * \param[in]	s			The socket to initialize
+ * \param[in]	protocol	The protocol to initialize the socket for use with
+ * \param[in]	port		The local port the socket will utilize (if appropriate)
+ * \param[in]	flag		Any flags affecting protocol initialization
  *
  * \return		Indicates whether the new socket was successfully initialized.
  * \retval	1	Indicates that the socket was successfully initialized.
@@ -64,7 +69,7 @@ uint8_t socketStatus(SOCKET s) {
 
 
 /**
- * @brief	This function close the socket and parameter is "s" which represent the socket number
+ * \brief	This function close the socket and parameter is "s" which represent the socket number
  */
 void close(SOCKET s) {
 	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
@@ -293,8 +298,7 @@ uint16_t sendto(SOCKET s, const uint8_t *buf, uint16_t len, uint8_t *addr, uint1
 
 
 /**
- * @brief	This function is an application I/F function which is used to receive the data in other then
- * 	TCP mode. This function is used to receive UDP, IP_RAW and MAC_RAW mode, and handle the header as well.
+ * @brief
  *
  * @return	This function return received data size for success else -1.
  */
@@ -306,48 +310,67 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
 	if (len > 0) {
 		SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
 		ptr = W5100.readSnRX_RD(s);
+
+		/* ---( Determine the mode which the socket is operating in, so we can act accordingly )--- */
 		switch (W5100.readSnMR(s) & 0x07) {
 			case SnMR::UDP:
+				/* ---( Handle UDP mode data )--- */
+
 				W5100.read_data(s, ptr, head, 0x08);
 				ptr += 8;
-				/* read peer's IP address, port number. */
+
+				/* Read the IP address of the peer (from the packet's header) */
 				addr[0] = head[0];
 				addr[1] = head[1];
 				addr[2] = head[2];
 				addr[3] = head[3];
+
+				/* Read the UDP port number from which the peer sent the data (from the packet's header) */
 				*port = head[4];
 				*port = (*port << 8) + head[5];
+
+				/* Read the (expected) length of the packet, as sent by the peer (from the packet's header) */
 				data_len = head[6];
 				data_len = (data_len << 8) + head[7];
 
-				W5100.read_data(s, ptr, buf, data_len);		/* data copy. */
+				/* Start reading the packet's data, copying it into the data buffer */
+				W5100.read_data(s, ptr, buf, data_len);
 				ptr += data_len;
 
 				W5100.writeSnRX_RD(s, ptr);
+
 				break;
 
 			case SnMR::IPRAW:
+				/* ---( Handle IP_RAW mode data )--- */
+
 				W5100.read_data(s, ptr, head, 0x06);
 				ptr += 6;
 
+				/* Read the IP address of the peer from the packet's header */
 				addr[0] = head[0];
 				addr[1] = head[1];
 				addr[2] = head[2];
 				addr[3] = head[3];
+
+				/* Read the (expected) length of the packet, as sent by the peer (from the packet's header) */
 				data_len = head[4];
 				data_len = (data_len << 8) + head[5];
 
-				W5100.read_data(s, ptr, buf, data_len);		/* data copy. */
+				/* Start reading the packet's data, copying it into the data buffer */
+				W5100.read_data(s, ptr, buf, data_len);
 				ptr += data_len;
 
 				W5100.writeSnRX_RD(s, ptr);
 				break;
 
 			case SnMR::MACRAW:
+				/* ---( Handle MAC_RAW mode data )--- */
+
 				W5100.read_data(s, ptr, head, 2);
 				ptr += 2;
 				data_len = head[0];
-				data_len = (data_len<<8) + head[1] - 2;
+				data_len = (data_len << 8) + head[1] - 2;
 
 				W5100.read_data(s, ptr, buf, data_len);
 				ptr += data_len;
@@ -355,8 +378,10 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
 				break;
 
 			default:
+				/* ---( Handle unknown or invalid modes )--- */
 				break;
 		}
+
 		W5100.execCmdSn(s, Sock_RECV);
 		SPI.endTransaction();
 	}
@@ -365,11 +390,10 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
 }
 
 
-/**
- * @brief	Wait for buffered transmission to complete.
- */
 void flush(SOCKET s) {
-	// TODO
+	/**
+	 * \todo Implement logic for the \c flush() function.
+	 */
 }
 
 

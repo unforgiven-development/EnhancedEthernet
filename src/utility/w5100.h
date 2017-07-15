@@ -136,6 +136,11 @@ public:
 };
 
 
+/**
+ * \class SnSR
+ * This class defines the per-socket status register.
+ * \brief Defines the per-socket status register.
+ */
 class SnSR {
 public:
 	static const uint8_t CLOSED							= 0x00;
@@ -156,6 +161,11 @@ public:
 };
 
 
+/**
+ * \class IPPROTO
+ * This class provides definitions of the various IP protocols available for use.
+ * \brief Defines IP protocols
+ */
 class IPPROTO {
 public:
 	static const uint8_t IP								= 0;
@@ -183,16 +193,16 @@ public:
 	void init();
 
 	/**
-	 * @brief	This function is being used for copy the data form Receive buffer of the chip to application buffer.
+	 * \brief This function is being used for copy the data form Receive buffer of the chip to application buffer.
 	 *
 	 * It calculate the actual physical address where one has to read the data from Receive buffer. Here also take care
 	 * of the condition while it exceed the Rx memory uper-bound of socket.
 	 */
-	void read_data(SOCKET s, volatile uint16_t src, volatile uint8_t * dst, uint16_t len);
+	void read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *dst, uint16_t len);
 
 
 	/**
-	 * \brief	 This function is being called by send() and sendto() function also.
+	 * \brief This function is being called by send() and sendto() function also.
 	 *
 	 * This function read the Tx write pointer register and after copy the data in buffer update the Tx write pointer
 	 * register. User should read upper byte first and lower byte later to get proper value.
@@ -201,15 +211,17 @@ public:
 
 
 	/**
-	 * \brief	A copy of send_data_processing that uses the provided ptr for the write offset.
-	 *			Only needed for the "streaming" UDP API, where a single UDP packet is built up over a number of calls to
-	 *			send_data_processing_ptr, because TX_WR doesn't seem to get updated correctly in those scenarios.
+	 * \brief A copy of send_data_processing that uses the provided ptr for the write offset.
+	 *
+	 * Only needed for the "streaming" UDP API, where a single UDP packet is built up over a number of calls to
+	 * send_data_processing_ptr, because TX_WR doesn't seem to get updated correctly in those scenarios.
+	 *
+	 * \todo fix doc for this function
 	 *
 	 * \param ptr value to use in place of TX_WR.  If 0, then the value is read in from TX_WR
 	 *
-	 * @return New value for ptr, to be used in the next call
+	 * \return New value for ptr, to be used in the next call
 	 */
-	/* FIXME Update documentation */
 	void send_data_processing_offset(SOCKET s, uint16_t data_offset, const uint8_t *data, uint16_t len);
 
 
@@ -222,23 +234,66 @@ public:
 	void recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uint8_t peek = 0);
 
 
+	/**
+	 * \brief Sets the gateway IP address
+	 *
+	 * \param[in]	_addr	A pointer to an array containing the gateway IP address
+	 */
 	inline void setGatewayIp(uint8_t *_addr);
+
+	/**
+	 * \brief Retreives the current gateway IP address
+	 *
+	 * \param[out]	_addr	A pointer to an array to which the gateway IP address will be stored in
+	 */
 	inline void getGatewayIp(uint8_t *_addr);
 
+	/**
+	 * \brief Sets the subnet mask
+	 *
+	 * \param[in]	_addr	A pointer to an array which contains the subnet mask to be set
+	 */
 	inline void setSubnetMask(uint8_t *_addr);
+
+	/**
+	 * \brief Read the subnet mask from hardware
+	 *
+	 * \param[out]	_addr	A pointer to an array to which the subnet mask will be stored in
+	 */
 	inline void getSubnetMask(uint8_t *_addr);
 
-	inline void setMACAddress(uint8_t * addr);
-	inline void getMACAddress(uint8_t * addr);
+	/**
+	 * \brief Set the MAC address for use by the Ethernet interface
+	 *
+	 * \param[in]	_hwaddr	Pointer to the array which the MAC address is held in
+	 */
+	inline void setMACAddress(uint8_t *_hwaddr);
 
-	inline void setIPAddress(uint8_t * addr);
-	inline void getIPAddress(uint8_t * addr);
+	inline void getMACAddress(uint8_t *_hwaddr);
+
+	inline void setIPAddress(uint8_t *_ipaddr);
+
+	/**
+	 * Retrieves the current IP address from the hardware registers, and places it into a buffer.
+	 *
+	 * \brief Read current IP from hardware
+	 *
+	 * \param[out]	_ipaddr	A pointer to the buffer which the retrieved IP address will be stored within
+	 */
+	inline void getIPAddress(uint8_t *_ipaddr);
 
 	inline void setRetransmissionTime(uint16_t timeout);
 	inline void setRetransmissionCount(uint8_t _retry);
 
 	void execCmdSn(SOCKET s, SockCMD _cmd);
 
+	/**
+	 * \brief Retrieves the available TX buffer space for a given socket
+	 *
+	 * \param[in]	s	The socket for which to retrieve the free TX buffer space
+	 *
+	 * \return	Returns the amount of bytes available in the TX buffer
+	 */
 	uint16_t getTXFreeSize(SOCKET s);
 	uint16_t getRXReceivedSize(SOCKET s);
 
@@ -404,16 +459,43 @@ private:
 #define SPI_ETHERNET_SETTINGS SPISettings(8000000, MSBFIRST, SPI_MODE0)
 
 
+/* SPI SS/CS (slave select/chip select) functions, as well as interrupt-related functions. */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 /**
- * SPI SS/CS (slave select/chip select) functions, as well as interrupt-related functions.
- * ---------------------------------------------------------------------------------------------------------------------
- * SPI SS/CS functions:
+ * \name SPIFunctions
+ * Functions related to the managment of SPI and slave-select.
+ */
+
+/**
+ * @{
+ */
+
+/**
+ * \fn inline static void initSS()
+ * Initialize the \b SS (slave select) pin, using the "lowest-level" technique available for our hardware platform.
+ * \brief Initialize the SS pin
  *
- * \fn inline static void initSS()	Initialize the slave select pin, using the "lowest-level" technique available
- * \fn inline static void setSS()	Set the slave select pin to active (low), using "low-level" techniques
- * \fn inline static void resetSS()	Reset the slave select pin (high), using "low-level" techniques
+ * \fn inline static void setSS()
+ * Set the \b SS (slave select) pin to the \b active (low) state, which selects the Ethernet controller for \b SPI
+ * communication, using the "lowest-level" technique available for our hardware platform.
+ * \brief Set the SS pin to active (low)
  *
- * ---------------------------------------------------------------------------------------------------------------------
+ * \fn inline static void resetSS()
+ * Resets the \b SS (slave select) pin to the \b inactive (HIGH) state, which \e deselects the Ethernet controller, and
+ * allows the \b SPI bus to be used by other devices.\n
+ * This is performed using the "lowest-level" technique available for our hardware platform.
+ * \brief Reset the SS pin to inactive (high)
+ */
+
+/**
+ * @}
+ */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/**
  * \def ETHERNET_USE_INTERRUPTS
  * Enables use of interrupt-based communcation with the W5100 when defined (optionally, with a value of \b 1 -- though
  * just defining it should be adequate).
@@ -430,6 +512,7 @@ private:
 
 /* Arduino Mega and Arduino Mega 2560 */
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+private:
 	inline static void initSS()		{ DDRB  |=  _BV(4); };
 	inline static void setSS()		{ PORTB &= ~_BV(4); };
 	inline static void resetSS()	{ PORTB |=  _BV(4); };
@@ -442,18 +525,21 @@ private:
 
 /* Arduino Leonardo; possibly Teensy 2.0 and other ATmega32U4-based boards? */
 #elif defined(__AVR_ATmega32U4__)
+private:
 	inline static void initSS()		{ DDRB  |=  _BV(6); };
 	inline static void setSS()		{ PORTB &= ~_BV(6); };
 	inline static void resetSS()	{ PORTB |=  _BV(6); };
 
 /* Teensy++ 2.0 ?? */
 #elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
+private:
 	inline static void initSS()		{ DDRB  |=  _BV(0); };
 	inline static void setSS()		{ PORTB &= ~_BV(0); };
 	inline static void resetSS()	{ PORTB |=  _BV(0); };
 
 /* "Generic" Arduino devices (ie: Arduino Uno (ATmega328P), etc.) */
-#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+private:
 	inline static void initSS()		{ DDRB  |=  _BV(2); };
 	inline static void setSS()		{ PORTB &= ~_BV(2); };
 	inline static void resetSS()	{ PORTB |=  _BV(2); };
@@ -466,6 +552,7 @@ private:
 
 /* Any other "Generic" Arduino devices */
 #else
+private:
 	inline static void initSS()		{ pinMode(10, OUTPUT);		};
 	inline static void setSS()		{ digitalWrite(10, LOW);	};
 	inline static void resetSS()	{ digitalWrite(10, HIGH);	};
@@ -473,12 +560,14 @@ private:
 
 /* SPI CS pin handling for ARC devices (Arduino 101) */
 #elif defined(__ARDUINO_ARC__)
+private:
 	inline static void initSS()			{ pinMode(10, OUTPUT);		};
 	inline static void setSS()			{ digitalWrite(10, LOW);	};
 	inline static void resetSS()		{ digitalWrite(10, HIGH);	};
 
 /* SPI CS pin handing for all other devices */
 #else
+private:
 	inline static void initSS()		{
 		*portModeRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS))   |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
 	}
@@ -509,24 +598,12 @@ private:
 extern W5100Class W5100;
 
 
-/**
- * Read data from a socket
- *
- * \param _s	The socket from which data shall be read
- * \param _addr	The address at which the data to be read is located
- */
+
 uint8_t W5100Class::readSn(SOCKET _s, uint16_t _addr) {
 	return read(CH_BASE + _s * CH_SIZE + _addr);
 }
 
 
-/**
- * Write data to a specific socket
- *
- * \param _s	The socket to which data shall be written
- * \param _addr	The address at which the data to be written shall be located
- * \param _data	The data to write to the socket
- */
 uint8_t W5100Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t _data) {
 	return write(CH_BASE + _s * CH_SIZE + _addr, _data);
 }
@@ -542,52 +619,41 @@ uint16_t W5100Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t 
 }
 
 
-/**
- * \fn getGatewayIP	Get the current gateway IP address
- */
 void W5100Class::getGatewayIp(uint8_t *_addr) {
 	readGAR(_addr);
 }
 
-/**
- * \fn setGatewayIP	Set the gateway IP address
- */
 void W5100Class::setGatewayIp(uint8_t *_addr) {
 	writeGAR(_addr);
 }
 
-/**
- * \fn getSubnetMask	Get the current subnet mask
- */
 void W5100Class::getSubnetMask(uint8_t *_addr) {
 	readSUBR(_addr);
 }
 
-/**
- * \fn setSubnetMask	Set the subnet mask
- */
+
 void W5100Class::setSubnetMask(uint8_t *_addr) {
 	writeSUBR(_addr);
 }
 
 
-void W5100Class::getMACAddress(uint8_t *_addr) {
-	readSHAR(_addr);
+void W5100Class::getMACAddress(uint8_t *_hwaddr) {
+	readSHAR(_hwaddr);
 }
 
 
-void W5100Class::setMACAddress(uint8_t *_addr) {
-	writeSHAR(_addr);
+void W5100Class::setMACAddress(uint8_t *_hwaddr) {
+	writeSHAR(_hwaddr);
 }
 
 
-void W5100Class::getIPAddress(uint8_t *_addr) {
-	readSIPR(_addr);
+void W5100Class::getIPAddress(uint8_t *_ipaddr) {
+	readSIPR(_ipaddr);
 }
 
 
-void W5100Class::setIPAddress(uint8_t *_addr) {
-	writeSIPR(_addr);
+void W5100Class::setIPAddress(uint8_t *_ipaddr) {
+	writeSIPR(_ipaddr);
 }
 
 

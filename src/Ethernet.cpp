@@ -27,8 +27,7 @@ int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned l
 	// Now try to get our config info from a DHCP server
 	int ret = _dhcp->beginWithDHCP(mac_address, timeout, responseTimeout);
 	if (ret == 1) {
-		// We've successfully found a DHCP server and got our configuration info, so set things
-		// accordingly
+		// We've successfully found a DHCP server and got our configuration info, so set things accordingly
 		SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
 		W5100.setIPAddress(_dhcp->getLocalIp().raw_address());
 		W5100.setGatewayIp(_dhcp->getGatewayIp().raw_address());
@@ -42,8 +41,7 @@ int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned l
 
 
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip) {
-	// Assume the DNS server will be the machine on the same network as the local IP
-	// but with last octet being '1'
+	// Assume the DNS server will be the machine on the same network as the local IP but with last octet being '1'
 	IPAddress dns_server = local_ip;
 	dns_server[3] = 1;
 	begin(mac_address, local_ip, dns_server);
@@ -51,8 +49,7 @@ void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip) {
 
 
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server) {
-	// Assume the gateway will be the machine on the same network as the local IP
-	// but with last octet being '1'
+	// Assume the gateway will be the machine on the same network as the local IP but with last octet being '1'
 	IPAddress gateway = local_ip;
 	gateway[3] = 1;
 	begin(mac_address, local_ip, dns_server, gateway);

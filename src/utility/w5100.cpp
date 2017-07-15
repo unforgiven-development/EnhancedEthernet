@@ -1,14 +1,20 @@
-/*
+/**
  * \file w5100.cpp
+ * Contains the core functionality for communication with the W5100 Ethernet controller.
  *
- * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>
- * Copyright (c) 2010 by Arduino LLC. All rights reserved.
+ * \author		Gerad Munsch <gmunsch@unforgivendevelopment.com>
+ * \author		Arduino LLC.
+ * \date		2010-2017
  *
- * This file is free software; you can redistribute it and/or modify
- * it under the terms of either the GNU General Public License version 2
- * or the GNU Lesser General Public License version 2.1, both as
- * published by the Free Software Foundation.
+ * \copyright	This file is free software; you can redistribute it and/or modify
+ *				it under the terms of either the GNU General Public License version 2
+ *				or the GNU Lesser General Public License version 2.1, both as
+ *				published by the Free Software Foundation.
+ *
+ * \todo Implement PPPoE functionality
  */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 #include <stdio.h>
 #include <string.h>
@@ -16,24 +22,40 @@
 #include "w5100.h"
 
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 
 /* W5100 controller instance */
 W5100Class W5100;
 
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 /**
- * \def TX_RX_MAX_BUF_SIZE	Defines the maximum size of the TX and RX buffers, combined, in bytes.
- * \def TX_BUF				Defines the size of the TX buffer in bytes.
- * \def RX_BUF				Defines the size of the RX buffer in bytes; determined by the difference of the maximum size
- *							of the TX and RX buffers (combined), minus the defined size of the TX buffer.
+ * \def TX_RX_MAX_BUF_SIZE
+ * Defines the maximum size of the TX and RX buffers, combined, in bytes.
+ *
+ * \def TX_BUF
+ * Defines the size of the TX buffer in bytes.
+ *
+ * \def RX_BUF
+ * Defines the size of the RX buffer in bytes; determined by the difference of the maximum size of the TX and RX buffers
+ * (combined), minus the defined size of the TX buffer.
+ *
+ * \def TXBUF_BASE
+ * Defines the base address of the W5100's internal transmit buffers.
+ *
+ * \def RXBUF_BASE
+ * Defines the base address of the W5100's internal receive buffers.
  */
 #define TX_RX_MAX_BUF_SIZE	2048
 #define TX_BUF				0x1100
 #define RX_BUF				(TX_BUF + TX_RX_MAX_BUF_SIZE)
-
 #define TXBUF_BASE			0x4000
 #define RXBUF_BASE			0x6000
 
+
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 
 void W5100Class::init(void) {

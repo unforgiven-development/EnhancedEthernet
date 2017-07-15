@@ -36,9 +36,14 @@ private:
 
 public:
 	/**
+	 * The constructor for the EthernetServer class. This creates a new instance of a "server" on the Ethernet hardware,
+	 * listening for incoming connections from clients.
 	 *
+	 * \brief Constructor -- creates a new instance of a "server"
+	 *
+	 * \param[in]	port	The port on which to listen for incoming connections.
 	 */
-	EthernetServer(uint16_t);
+	EthernetServer(uint16_t port);
 
 	/**
 	 *

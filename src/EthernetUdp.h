@@ -79,9 +79,9 @@ public:
 	 *
 	 * \param[in]	port	The UDP port number to open the listening socket on
 	 *
-	 * \return		Indicates whether the operation was successful or not.
-	 * \retval 1	Success
-	 * \retval 0	No sockets are available to use on the W5100 device
+	 * \return Indicates whether the operation was successful or not.
+	 * \retval	1	Success
+	 * \retval	0	No sockets are available to use on the W5100 device
 	 */
 	virtual uint8_t begin(uint16_t);
 
@@ -90,12 +90,12 @@ public:
 	 *
 	 * \brief Start multicast listener on UDP port.
 	 *
-	 * \param[in] ip	The multicast IP address to open the listening socket on
-	 * \param[in] port	The UDP port number to open the multicast listening socket on
+	 * \param[in]	ip		The multicast IP address to open the listening socket on
+	 * \param[in]	port	The UDP port number to open the multicast listening socket on
 	 *
-	 * \return		Indicates whether the operation was successful or not.
-	 * \retval 1	Success
-	 * \retval 0	No sockets are available to use on the W5100 device
+	 * \return Indicates whether the operation was successful or not.
+	 * \retval	1	Success
+	 * \retval	0	No sockets are available to use on the W5100 device
 	 */
 	virtual uint8_t beginMulticast(IPAddress, uint16_t);
 
@@ -115,12 +115,12 @@ public:
 	 *
 	 * \brief Start building a UDP packet, with the destination specified by IP address.
 	 *
-	 * \param[in] ip	IP address of host to send packet to
-	 * \param[in] port	UDP port number to send packet to
+	 * \param[in]	ip		IP address of host to send packet to
+	 * \param[in]	port	UDP port number to send packet to
 	 *
 	 * \return Indicates whether the start of building the new packet was successful or not.
-	 * \retval 1 Success
-	 * \retval 0 There was an error with the supplied IP address and/or port
+	 * \retval	1	Success
+	 * \retval	0	There was an error with the supplied IP address and/or port
 	 */
 	virtual int beginPacket(IPAddress ip, uint16_t port);
 
@@ -131,12 +131,12 @@ public:
 	 *
 	 * \brief Start building a UDP packet, with the destination specified by hostname.
 	 *
-	 * \param[in] host	The hostname to send the packet to
-	 * \param[in] port	The UDP port number to send the packet to
+	 * \param[in]	host	The hostname to send the packet to
+	 * \param[in]	port	The UDP port number to send the packet to
 	 *
 	 * \return Indicates whether the start of building the new packet was successful or not.
-	 * \retval 1 Success
-	 * \retval 0 Error with DNS resolution
+	 * \retval	1	Success
+	 * \retval	0	Error with DNS resolution
 	 */
 	virtual int beginPacket(const char *host, uint16_t port);
 
@@ -147,8 +147,8 @@ public:
 	 * \brief Finish building the UDP packet, and send it.
 	 *
 	 * \return Indicates whether the packet was successfully sent or not.
-	 * \retval 1 Success
-	 * \retval 0 An error occurred while sending the packet
+	 * \retval	1	Success
+	 * \retval	0	An error occurred while sending the packet
 	 */
 	virtual int endPacket();
 

@@ -9,10 +9,12 @@
  */
 
 
-#ifndef __DHCP_H__
-#define __DHCP_H__
+#ifndef _DHCP_H__
+#define _DHCP_H__
+
 
 #include "EthernetUdp.h"
+
 
 /* DHCP state machine. */
 #define STATE_DHCP_START		0
@@ -24,13 +26,16 @@
 
 #define DHCP_FLAGSBROADCAST		0x8000
 
+
 /* UDP port numbers for DHCP */
 #define	DHCP_SERVER_PORT		67	/* from server to client */
 #define DHCP_CLIENT_PORT		68	/* from client to server */
 
+
 /* DHCP message OP code */
 #define DHCP_BOOTREQUEST		1
 #define DHCP_BOOTREPLY			2
+
 
 /* DHCP message type */
 #define	DHCP_DISCOVER			1
@@ -129,22 +134,24 @@ enum {
 
 
 typedef struct __attribute__((packed)) _RIP_MSG_FIXED {
-	uint8_t		op;
-	uint8_t		htype;
-	uint8_t		hlen;
-	uint8_t		hops;
-	uint32_t	xid;
-	uint16_t	secs;
-	uint16_t	flags;
-	uint8_t		ciaddr[4];
-	uint8_t		yiaddr[4];
-	uint8_t		siaddr[4];
-	uint8_t		giaddr[4];
-	uint8_t		chaddr[6];
+	uint8_t  op;
+	uint8_t  htype;
+	uint8_t  hlen;
+	uint8_t  hops;
+	uint32_t xid;
+	uint16_t secs;
+	uint16_t flags;
+	uint8_t  ciaddr[4];
+	uint8_t  yiaddr[4];
+	uint8_t  siaddr[4];
+	uint8_t  giaddr[4];
+	uint8_t  chaddr[6];
 } RIP_MSG_FIXED;
 
 /**
- * \class DhcpClass	Provides DHCP functionality for the EnhancedEthernet library
+ * \class DhcpClass
+ * Provides DHCP functionality for the EnhancedEthernet library
+ * \brief Implements DHCP functionality
  */
 class DhcpClass {
 private:
@@ -173,7 +180,7 @@ private:
 	void send_DHCP_MESSAGE(uint8_t, uint16_t);
 	void printByte(char *, uint8_t);
 
-	uint8_t parseDHCPResponse(unsigned long responseTimeout, uint32_t& transactionId);
+	uint8_t parseDHCPResponse(unsigned long responseTimeout, uint32_t &transactionId);
 
 public:
 	IPAddress getLocalIp();
@@ -182,8 +189,57 @@ public:
 	IPAddress getDhcpServerIp();
 	IPAddress getDnsServerIp();
 
-	int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
-	int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000, const char* requestedHostname);
+	/**
+	 * \fn int beginWithDHCP(uint8_t *mac, unsigned long timeout = 60000, unsigned long responseTimeout = 4000)
+	 * Initialize the Ethernet hardware using DHCP, given the provided MAC address.\n
+	 * Additionally, if desired, it is possible to set the overall timeout for the DHCP request (DEFAULT: 60000 ms), and
+	 * the timeout for parsing a DHCP response (DEFAULT: 4000 ms).
+	 *
+	 * \brief Initialize DHCP, specifying MAC, and optionally timeouts
+	 *
+	 * \param[in]	mac				MAC address of the hardware requesting the DHCP lease.
+	 * \param[in]	timeout			Amount of time to wait while attempting to request a DHCP lease.
+	 * \param[in]	responseTimeout	Amount of time to wait while attempting to parse a DHCP response packet.
+	 *
+	 * \return Indicates whether the DHCP request was successful, or not.
+	 * \retval	1	DHCP initialization was successful
+	 * \retval	0	DHCP initialization failed
+	 */
+	int beginWithDHCP(uint8_t *mac, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
+
+	/**
+	 * \overload int beginWithDHCP(uint8_t *mac, const char *requestedHostname, unsigned long timeout = 60000, unsigned long responseTimeout = 4000)
+	 * Initialize the Ethernet hardware using DHCP, given the provided MAC address.\n
+	 * Additionally, if desired, it is possible to set the overall timeout for the DHCP request (DEFAULT: 60000 ms), and
+	 * the timeout for parsing a DHCP response (DEFAULT: 4000 ms).\n
+	 * In addition, the user may indicate a desired hostname to be sent with the DHCP request, instead of the default
+	 *
+	 * \brief Initialize DHCP, specifying MAC, timeout, and hostname
+	 *
+	 * \param[in]	mac					MAC address of the hardware requesting the DHCP lease.
+	 * \param[in]	requestedHostname	User-set hostname to request for use for the device.
+	 * \param[in]	timeout				Amount of time to wait while attempting to request a DHCP lease.
+	 * \param[in]	responseTimeout		Amount of time to wait while attempting to parse a DHCP response packet.
+	 *
+	 * \return Indicates whether the DHCP request was successful, or not.
+	 * \retval	1	DHCP initialization was successful
+	 * \retval	0	DHCP initialization failed
+	 */
+	int beginWithDHCP(uint8_t *mac, const char *requestedHostname, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
+
+	/**
+	 * Checks the current status of the DHCP lease, to determine if any action is necessary to maintain the state of the
+	 * DHCP lease going fowards.
+	 *
+	 * \brief Checks the current status of the DHCP lease
+	 *
+	 * \return Returns the current status of the DHCP lease.
+	 * \retval	0	Nothing occurred.
+	 * \retval	1	DHCP renew failed
+	 * \retval	2	DHCP renew succeeded
+	 * \retval	3	DHCP rebind failed
+	 * \retval	4	DHCP rebind succeeded
+	 */
 	int checkLease();
 };
 

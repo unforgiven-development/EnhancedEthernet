@@ -22,11 +22,23 @@ class EthernetClient : public Client {
 public:
 	/**
 	 * \fn EthernetClient()
+	 * The default (no-arg) constructor for EthernetClient. This constructor instantiates a new instance of a Client
+	 * object (specifically a Client object which uses Ethernet as the physical layer), and it will (attempt to) use the
+	 * first socket which is available for use on the W5100 hardware.
+	 *
+	 * \brief Constructor -- creates a new EthernetClient object
 	 */
 	EthernetClient();
 
 	/**
 	 * \overload EthernetClient(uint8_t sock)
+	 * An alternative constructor for the EthernetClient class. This constructor attempts to instantiate the Client
+	 * object (specifically, EthernetClient object) using the hardware socket number that is passed to it during the
+	 * instantiation of the object.
+	 *
+	 * \note If the socket specified is in use, this is likely to fail.
+	 *
+	 * \brief Constructor -- creates a new EthernetClient object, having specified the desired socket
 	 *
 	 * \param[in]	sock	Specifies the hardware socket to use
 	 */
@@ -67,9 +79,22 @@ public:
 	virtual int connect(const char *host, uint16_t port);
 
 
+	/**
+	 * \name Client Write Functions
+	 * Functions that provide the ability to write data to an active connection.
+	 */
+
+	/**
+	 * @{
+	 */
+
 	virtual size_t write(uint8_t);
 
 	virtual size_t write(const uint8_t *buf, size_t size);
+
+	/**
+	 * @}
+	 */
 
 
 	virtual int available();
@@ -94,24 +119,37 @@ public:
 
 	virtual operator bool();
 
+
 	virtual bool operator==(const bool value) {
 		return bool() == value;
 	}
+
 
 	virtual bool operator!=(const bool value) {
 		return bool() != value;
 	}
 
+
 	virtual bool operator==(const EthernetClient&);
+
 
 	virtual bool operator!=(const EthernetClient& rhs) {
 		return !this->operator == (rhs);
 	};
 
 
+	/**
+	 * This function is solely to report which hardware socket is in use by this particular EthernetClient instance.
+	 *
+	 * \brief Reports which hardware socket is in use by this this client object
+	 *
+	 * \return Returns the socket number which is in use by this EthernetClient object
+	 */
 	uint8_t getSocketNumber();
 
+
 	friend class EthernetServer;
+
 
 	using Print::write;
 
@@ -119,5 +157,6 @@ private:
 	static uint16_t _srcport;
 	uint8_t _sock;
 };
+
 
 #endif	/* __ETHERNETCLIENT_H__ */

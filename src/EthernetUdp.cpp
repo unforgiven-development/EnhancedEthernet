@@ -37,16 +37,11 @@
 #include "Dns.h"
 
 
-/**
- * Constructor
- */
+
 EthernetUDP::EthernetUDP() : _sock(MAX_SOCK_NUM) {
 }
 
 
-/**
- * Start EthernetUDP socket, listening on the specified local port.
- */
 uint8_t EthernetUDP::begin(uint16_t port) {
 	if (_sock != MAX_SOCK_NUM) {
 		return 0;
@@ -72,18 +67,11 @@ uint8_t EthernetUDP::begin(uint16_t port) {
 }
 
 
-/**
- * return number of bytes available in the current packet,
- * will return zero if parsePacket hasn't been called yet
- */
 int EthernetUDP::available() {
 	return _remaining;
 }
 
 
-/**
- * Release any resources being used by this EthernetUDP instance
- */
 void EthernetUDP::stop() {
 	if (_sock == MAX_SOCK_NUM) {
 		return;
@@ -213,9 +201,9 @@ int EthernetUDP::peek() {
 	uint8_t b;
 
 	/**
-	 * \note Unlike 'recv', the standard 'peek' function doesn't first check to see if there's any data available, so we
-	 *       must do so here. If 'parsePacket' has not yet been called, return nothing. Otherwise, we may return the UDP
-	 *       header.
+	 * \note Unlike recv(), the standard peek() function doesn't first check to see if there's any data available, so we
+	 * must do so here.\n
+	 * If 'parsePacket' has not yet been called, return nothing. Otherwise, we may return the UDP header.
 	 */
 	if (!_remaining) {
 		return -1;
