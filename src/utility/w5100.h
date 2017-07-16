@@ -54,6 +54,11 @@ public:
 };
 
 
+/**
+ * \class IR
+ * This class describes the structure of the interrupt register.
+ * \brief Describes the interrupt register
+ */
 class IR {
 public:
 	static const uint8_t CONFLICT						= 0x80;
@@ -115,24 +120,37 @@ public:
 
 /**
  * \class SnIR
- *
- *
- * \var SEND_OK	Triggers a hardware interrupt, and sets register value to '1' if send operation is completed.
- * \var TIMEOUT	Triggers a hardware interrupt, and sets register value to '1' if timeout occurs during connection
- *				establishment or termination, or during data transmission.
- * \var RECV	Triggers a hardware interrupt, and sets register value to '1' when W5100 receives data. The same action
- *				occurs if received data remains after executing the CMD_RECV command.
- * \var DISCON	Triggers a hardware interrupt, and sets register value to '1' if connection termination is requested or
- *				finished.
- * \var CON		Triggers a hardware interrupt, and sets register value to '1' if connection is established.
+ * This class defines the per-socket interrupt register.
+ * \brief Defines the per-socket interupt register
  */
 class SnIR {
 public:
-	static const uint8_t SEND_OK						= 0x10;
-	static const uint8_t TIMEOUT						= 0x08;
-	static const uint8_t RECV							= 0x04;
-	static const uint8_t DISCON							= 0x02;
-	static const uint8_t CON							= 0x01;
+	/**
+	 * Triggers a hardware interrupt, and sets register value to '1' if send operation is completed.
+	 */
+	static const uint8_t SEND_OK = 0x10;
+
+	/**
+	 * Triggers a hardware interrupt, and sets register value to '1' if timeout occurs during connection establishment
+	 * or termination, or during data transmission.
+	 */
+	static const uint8_t TIMEOUT = 0x08;
+
+	/**
+	 * Triggers a hardware interrupt, and sets register value to '1' when W5100 receives data. The same action occurs if
+	 * received data remains after executing the CMD_RECV command.
+	 */
+	static const uint8_t RECV = 0x04;
+
+	/**
+	 * Triggers a hardware interrupt, and sets register value to '1' if connection termination is requested or finished.
+	 */
+	static const uint8_t DISCON = 0x02;
+
+	/**
+	 * Triggers a hardware interrupt, and sets register value to '1' if connection is established.
+	 */
+	static const uint8_t CON = 0x01;
 };
 
 
@@ -499,12 +517,36 @@ private:
  * \def ETHERNET_USE_INTERRUPTS
  * Enables use of interrupt-based communcation with the W5100 when defined (optionally, with a value of \b 1 -- though
  * just defining it should be adequate).
+ */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/**
+ * \name Interrupts
+ * Functions related to the management of hardware interrupts.
+ */
+
+/**
+ * @{
+ */
+
+/**
+ * \fn inline static void atchInt()
+ * Activates the appropriate external interrupt for digital pin 2 on the device. The interrupt is enabled using the
+ * "lowest-level" method possible for the given hardware.\n
+ * This \e (essentially) performs the action of "attaching" the external interrupt on pin 2 to our \b ISR function (the
+ * interrupt service routine), which is the function that "handles" any interrupts that occur.
+ * \brief Attaches the external interrupt on Arduino pin 2 to our ISR
  *
- * ---------------------------------------------------------------------------------------------------------------------
- * Interrupt-related functions:
- *
- * \fn inline static void atchInt()	Activates the appropriate external interrupt for digital pin 2 on the device.
- * \fn inline static void dtchInt()	Disables activation of the ISR by means of the external interrupt on pin 2.
+ * \fn inline static void dtchInt()
+ * This function "detaches" the external interrupt on Arduino pin 2 from our \b ISR -- effectively disabling the action
+ * of the interrupt-driven logic. Once again, we attempt to use the "lowest-level" method possible for our given device
+ * platform.
+ * \brief Detaches the external interrupt on Arduino pin 2 from our ISR
+ */
+
+/**
+ * @}
  */
 
 /* SPI CS pin handling for AVR devices */
@@ -517,8 +559,9 @@ private:
 	inline static void setSS()		{ PORTB &= ~_BV(4); };
 	inline static void resetSS()	{ PORTB |=  _BV(4); };
 #if (ETHERNET_USE_INTERRUPTS == 1)
-	inline static void atchInt()	(EIMSK |=   0x10)
-	inline static void dtchInt()	(EIMSK &= ~(0x10))
+protected:
+	inline static void atchInt()	{ EIMSK |=   0x10;  };
+	inline static void dtchInt()	{ EIMSK &= ~(0x10); };
 	inline static void enInts()		{};
 	inline static void disInts()	{};
 #endif	/* ETHERNET_USE_INTERRUPTS == 1 */
@@ -544,8 +587,9 @@ private:
 	inline static void setSS()		{ PORTB &= ~_BV(2); };
 	inline static void resetSS()	{ PORTB |=  _BV(2); };
 #if (ETHERNET_USE_INTERRUPTS == 1)
-	inline static void atchInt()	(EIMSK |=   0x01)
-	inline static void dtchInt()	(EIMSK &= ~(0x01))
+protected:
+	inline static void atchInt()	{ EIMSK |=   0x01;  };
+	inline static void dtchInt()	{ EIMSK &= ~(0x01); };
 	inline static void enInts()		{};
 	inline static void disInts()	{};
 #endif	/* ETHERNET_USE_INTERRUPTS == 1 */
@@ -579,15 +623,30 @@ private:
 	}
 #endif
 
-/**
- * Declare "NULL" functions if ETHERNET_USE_INTERRUPTS == 0 or is undefined, as this will limit the need to use lots of
- * #ifdef statements throughout the code of the various functions.
- */
+
 #if (ETHERNET_USE_INTERRUPTS == 0) || !defined(ETHERNET_USE_INTERRUPTS)
+protected:
+	/**
+	 * Declare "NULL" functions if ETHERNET_USE_INTERRUPTS == 0 or is undefined, as this will limit the need to use lots
+	 * of #ifdef statements throughout the code of the various functions.
+	 */
 	inline static void atchInt()	{};
 	inline static void dtchInt()	{};
 	inline static void enInts()		{};
 	inline static void disInts()	{};
+#endif
+
+
+#if (ETHERNET_USE_INTERRUPTS == 1) || defined(ETHERNET_USE_INTERRUPTS)
+protected:
+	volatile bool _v_ipconflict = false;				/*!< Flag to hold that the IRQ indicated an IP conflict */
+	volatile bool _v_ip_port_unreachable = false;		/*!< Flag to hold that the IRQ indicated destination unreachable */
+	volatile uint8_t _v_sock_int_status[MAX_SOCK_NUM];  /*!< Array of flags indicating which event triggered the IRQ for a each socket */
+
+	/**
+	 * \brief Interrupt Service Routine
+	 */
+	void interruptHandler();
 #endif
 
 
