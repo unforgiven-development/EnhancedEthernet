@@ -234,11 +234,6 @@ int16_t recvAvailable(SOCKET s) {
 }
 
 
-/**
- * @brief	Returns the first byte in the receive queue (no checking)
- *
- * @return
- */
 uint16_t peek(SOCKET s, uint8_t *buf) {
 	SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
 	W5100.recv_data_processing(s, buf, 1, 1);

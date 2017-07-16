@@ -81,12 +81,12 @@ extern void flush(SOCKET s);
 extern int16_t recvAvailable(SOCKET s);
 
 /**
- * \brief "Peek" into a socket's buffer
+ * \brief Returns the first byte in the receive queue (no checking)
  *
- * \param[in]	s	The socket of which buffer is to be "peeked" into
- * \param[in]	buf	The buffer which we want to "peek" into
+ * \param[in]	s	The socket of which to "peek" into the RX queue
+ * \param[in]   buf	The pointer to the receive buffer of the socket
  *
- * \return TODO
+ * \return Returns the first byte contained in the socket's recieve buffer (queue)
  */
 extern uint16_t peek(SOCKET s, uint8_t *buf);
 
@@ -166,7 +166,7 @@ extern uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, ui
  * This function sets up a UDP datagram, the data for which will be provided by one or more calls to bufferData(), and
  * then finally sent with the sendUDP() function.
  *
- * \brief Starts creation of a UDP datagram
+ * \brief Start creation of a new UDP datagram, for buffered UDP send
  *
  * \param[in]	s		The socket which will be used to send the datagram
  * \param[in]	addr	A pointer to the array holding the IP address which the UDP datagram is destined for
